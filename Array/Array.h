@@ -8,7 +8,6 @@ class Array
 public:
 	Array();
 	Array(const int len);
-	//Array(const int* mas);
 	Array(const int* mas, const int len);
 
 	Array(const Array& otherMas);
@@ -39,11 +38,11 @@ public:
 
 private:
 	const int maxDifferenceBetweenRealLenAndMaxLen = 10;
-	const int m_additionInLenght = 5;
+	const int m_additionInLength = 5;
 
 	int* m_mas = nullptr;
 	int m_realLen = 0;
-	int m_maxLen = m_realLen + m_additionInLenght;
+	int m_maxLen = m_realLen + m_additionInLength;
 
 	bool indexAdmissible(const int index) const;
 	void setElem(const int index, const int num);

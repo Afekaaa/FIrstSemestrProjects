@@ -3,35 +3,23 @@
 
 Array::Array()
 {
-	m_maxLen = m_additionInLenght;
+	m_maxLen = m_additionInLength;
 	m_realLen = 0;
-	m_mas = new int[m_realLen];
+	m_mas = new int[m_maxLen];
 }
 
 Array::Array(const int len)
 {
-	m_maxLen = len + m_additionInLenght;
+	m_maxLen = len + m_additionInLength;
 	m_realLen = len;
-	m_mas = new int[m_realLen];
+	m_mas = new int[m_maxLen];
 }
-
-//Array::Array(const int* mas)
-//{
-//	m_realLen = sizeof(mas) / sizeof(int);
-//	m_maxLen = m_realLen + m_additionInLenght;
-//
-//	m_mas = new int[m_realLen];
-//
-//	for (int i = 0; i < m_realLen; ++i)
-//		m_mas[i] = mas[i];
-//
-//}
 
 Array::Array(const int* mas, const int len)
 {
 	m_realLen = len;
-	m_maxLen = m_realLen + m_additionInLenght;
-	m_mas = new int[m_realLen];
+	m_maxLen = m_realLen + m_additionInLength;
+	m_mas = new int[m_maxLen];
 
 	for (int i = 0; i < m_realLen; ++i)
 		m_mas[i] = mas[i];
@@ -40,13 +28,11 @@ Array::Array(const int* mas, const int len)
 Array::Array(const Array& otherMas)
 {
 	m_realLen = otherMas.m_realLen;
-	m_maxLen = m_realLen + m_additionInLenght;
+	m_maxLen = m_realLen + m_additionInLength;
 	m_mas = new int[m_maxLen];
 
 	for (int i = 0; i < m_realLen; ++i)
 		m_mas[i] = otherMas.m_mas[i];
-
-
 }
 
 Array::~Array()
@@ -61,17 +47,24 @@ void Array::sort()
 
 void Array::addElem(const int index, const int num)
 {
+	if (!indexAdmissible(index))
+		throw std::range_error("Index out of range");
+
 	if (m_realLen < m_maxLen)
 	{
 		m_realLen++;
 		setElem(index, num);
-	}
+	} 
 	else
 	{
 		m_realLen++;
-		m_maxLen = m_realLen + m_additionInLenght;
+		m_maxLen = m_realLen + m_additionInLength;
 
 		int* tmpArr = new int[m_maxLen];
+
+		for (int i = 0; i < m_realLen - 1; ++i)
+			tmpArr[i] = m_mas[i];
+
 		delete m_mas;
 		m_mas = tmpArr;
 
@@ -87,19 +80,19 @@ void Array::deleteElem(const int index)
 	if (!indexAdmissible(index))
 		throw std::invalid_argument("Попытка удалить элемент за пределами массива");
 
-	if (maxDifferenceBetweenRealLenAndMaxLen < m_maxLen - m_realLen)
-	{
+	if (maxDifferenceBetweenRealLenAndMaxLen > m_maxLen - m_realLen)
 		delElem(index);
-	}
-
 	else
 	{
 		delElem(index);
 
-		m_realLen--;
-		m_maxLen = m_realLen + m_additionInLenght;
+		m_maxLen = m_realLen + m_additionInLength;
 
 		int* tmpArr = new int[m_maxLen];
+
+		for (int i = 0; i > m_realLen; ++i)
+			tmpArr[i] = m_mas[i];
+
 		delete m_mas;
 		m_mas = tmpArr;
 	}
@@ -109,6 +102,7 @@ void Array::delElem(const int index)
 {
 	for (int i = index; i < m_realLen - 1; ++i)
 		m_mas[i] = m_mas[i + 1];
+	m_realLen--;
 }
 
 int Array::getIndexElem(const int num) const
@@ -182,7 +176,7 @@ std::istream& operator >> (std::istream& masIn, Array arr)
 
 int& Array::operator [] (int index)
 {
-	if (indexAdmissible(index) and masAdmissible())
+	if (indexAdmissible(index) and index != m_realLen)
 		return m_mas[index];
 }
 
@@ -194,7 +188,7 @@ Array& Array::operator -= (const int index)
 
 bool Array::indexAdmissible(const int index) const
 {
-	if (index >= 0 and index < m_realLen)
+	if (index >= 0 and index <= m_realLen)
 		return true;
 	return false;
 }
