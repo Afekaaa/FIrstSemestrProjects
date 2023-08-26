@@ -37,7 +37,7 @@ Array::Array(const Array& otherMas)
 
 Array::~Array()
 {
-	delete m_mas;
+	delete [] m_mas;
 }
 
 void Array::sort()
@@ -52,20 +52,18 @@ void Array::addElem(const int index, const int num)
 
 	if (m_realLen < m_maxLen)
 	{
-		m_realLen++;
 		setElem(index, num);
 	} 
 	else
 	{
-		m_realLen++;
 		m_maxLen = m_realLen + m_additionInLength;
 
 		int* tmpArr = new int[m_maxLen];
 
-		for (int i = 0; i < m_realLen - 1; ++i)
+		for (int i = 0; i < m_realLen; ++i)
 			tmpArr[i] = m_mas[i];
 
-		delete m_mas;
+		delete [] m_mas;
 		m_mas = tmpArr;
 
 		setElem(index, num);
@@ -90,10 +88,10 @@ void Array::deleteElem(const int index)
 
 		int* tmpArr = new int[m_maxLen];
 
-		for (int i = 0; i > m_realLen; ++i)
+		for (int i = 0; i < m_realLen; ++i)
 			tmpArr[i] = m_mas[i];
 
-		delete m_mas;
+		delete [] m_mas;
 		m_mas = tmpArr;
 	}
 }
@@ -157,6 +155,7 @@ void Array::setElem(const int index, const int num)
 		m_mas[i] = m_mas[i - 1];
 
 	m_mas[index] = num;
+	m_realLen++;
 }
 
 std::ostream& operator << (std::ostream& masOut, Array arr)
@@ -209,15 +208,14 @@ int main()
 
 	Array* arr = new Array(mas, len);
 
-		std::cout << arr->getLen() << std::endl;
+	std::cout << arr->getLen() << std::endl;
+	std::cout << *arr << std::endl;
+	std::cout << arr->getMaxElem() << std::endl;
+	std::cout << arr->getMinElem() << std::endl;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		arr->addElem(i + 10, i + 10);
 		std::cout << *arr;
-		std::cout << arr->getMaxElem();
-		std::cout << arr->getMinElem() << std::endl;
-
-		for (int i = 0; i < 6; ++i)
-		{
-			arr->addElem(i, i + 10);
-		}
-
-	std::cout << *arr;
+	}
 }
