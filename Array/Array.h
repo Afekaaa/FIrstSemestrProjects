@@ -2,6 +2,7 @@
 
 #include "C:\Users\Zykov Vladimir\source\repos\HoarSort\HoarSort\HoarSort.cpp"
 #include <iostream>
+#include <random>
 
 class Array
 {
@@ -28,6 +29,10 @@ public:
 
 	void rightShift(int index, int step);
 	void leftShift(int index, int step);
+
+	void randomArray();
+	void randomArrayToUp();
+	void randomArrayToDown();
 
 	friend std::ostream& operator << (std::ostream& masOut, Array arr);
 	friend std::istream& operator >> (std::istream& masIn, Array arr);

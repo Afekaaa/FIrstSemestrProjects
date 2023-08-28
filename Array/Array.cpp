@@ -190,6 +190,32 @@ void Array::leftShift(int index, int step)
 		m_mas[i] = 0;
 }
 
+void Array::randomArray()
+{
+	srand(time(0));
+
+	for (int i = 0; i < m_realLen; ++i)
+		m_mas[i] = -100 + rand() % 201;
+}
+void Array::randomArrayToUp()
+{
+	srand(time(0));
+
+	m_mas[0] = -100 + rand() % 201;
+
+	for (int i = 1; i < m_realLen; ++i)
+		m_mas[i] = m_mas[i - 1] + rand() % 20;
+}
+void Array::randomArrayToDown()
+{
+	srand(time(0));
+
+	m_mas[0] = -100 + rand() % 201;
+
+	for (int i = 1; i < m_realLen; ++i)
+		m_mas[i] = m_mas[i - 1] + rand() % 20;
+}
+
 std::ostream& operator << (std::ostream& masOut, Array arr)
 {
 	for (int i = 0; i < arr.m_realLen; ++i)
