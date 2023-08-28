@@ -14,8 +14,8 @@ public:
 	~Array();
 
 	void sort(); 
-	void addElem(const int index, const int num);
-	void deleteElem(const int index);
+	void insert(const int index, const int num);
+	void erase(const int index);
 
 	int getIndexElem(const int num) const;
 	int getMinElem() const;
@@ -24,12 +24,17 @@ public:
 
 	bool masAdmissible() const;
 
+	bool remove(const int num);
+
+	void rightShift(int index, int step);
+	void leftShift(int index, int step);
+
 	friend std::ostream& operator << (std::ostream& masOut, Array arr);
 	friend std::istream& operator >> (std::istream& masIn, Array arr);
 
 	int& operator [] (const int index);
 	Array& operator -= (const int index);
-
+	Array operator - (const int num);
 	Array& operator	= (const Array& otherMas);
 	Array operator	+ (const int num) const;
 	Array& operator	+= (const int num);
@@ -49,8 +54,8 @@ private:
 	int m_maxLen = m_realLen + m_additionInLength;
 
 	bool indexAdmissible(const int index) const;
-	void setElem(const int index, const int num);
-	void delElem(const int index);
+	void rightShifftAndInsert(const int index, const int num);
+	void leftShiftAndErase(const int index);
 
 };
 
