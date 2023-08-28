@@ -168,8 +168,17 @@ std::ostream& operator << (std::ostream& masOut, Array arr)
 
 std::istream& operator >> (std::istream& masIn, Array arr)
 {
+	std::cout << "Enter the number of elements: ";
+	std::cin >> arr.m_realLen;
+	arr.m_maxLen = arr.m_realLen + arr.m_additionInLength;
+
+	delete[] arr.m_mas;
+	arr.m_mas = new int[arr.m_maxLen];
+
+	std::cout << std::endl << "Enter the number: ";
 	for (int i = 0; i < arr.m_realLen; ++i)
 		masIn >> arr.m_mas[i];
+
 	return masIn;
 }
 
