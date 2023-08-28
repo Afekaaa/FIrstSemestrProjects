@@ -3,35 +3,23 @@
 
 Array::Array()
 {
-	m_maxLen = m_additionInLenght;
+	m_maxLen = m_additionInLength;
 	m_realLen = 0;
-	m_mas = new int[m_realLen];
+	m_mas = new int[m_maxLen];
 }
 
 Array::Array(const int len)
 {
-	m_maxLen = len + m_additionInLenght;
+	m_maxLen = len + m_additionInLength;
 	m_realLen = len;
-	m_mas = new int[m_realLen];
+	m_mas = new int[m_maxLen];
 }
-
-//Array::Array(const int* mas)
-//{
-//	m_realLen = sizeof(mas) / sizeof(int);
-//	m_maxLen = m_realLen + m_additionInLenght;
-//
-//	m_mas = new int[m_realLen];
-//
-//	for (int i = 0; i < m_realLen; ++i)
-//		m_mas[i] = mas[i];
-//
-//}
 
 Array::Array(const int* mas, const int len)
 {
 	m_realLen = len;
-	m_maxLen = m_realLen + m_additionInLenght;
-	m_mas = new int[m_realLen];
+	m_maxLen = m_realLen + m_additionInLength;
+	m_mas = new int[m_maxLen];
 
 	for (int i = 0; i < m_realLen; ++i)
 		m_mas[i] = mas[i];
@@ -40,18 +28,16 @@ Array::Array(const int* mas, const int len)
 Array::Array(const Array& otherMas)
 {
 	m_realLen = otherMas.m_realLen;
-	m_maxLen = m_realLen + m_additionInLenght;
+	m_maxLen = m_realLen + m_additionInLength;
 	m_mas = new int[m_maxLen];
 
 	for (int i = 0; i < m_realLen; ++i)
 		m_mas[i] = otherMas.m_mas[i];
-
-
 }
 
 Array::~Array()
 {
-	delete m_mas;
+	delete [] m_mas;
 }
 
 void Array::sort()
@@ -59,27 +45,32 @@ void Array::sort()
 	hoarSort(m_mas, 0, m_realLen);
 }
 
-void Array::addElem(const int index, const int num)
+void Array::insert(const int index, const int num)
 {
+	if (!indexAdmissible(index))
+		throw std::out_of_range("Index out of range");
+
 	if (m_realLen < m_maxLen)
 	{
-		m_realLen++;
-		setElem(index, num);
-	}
+		rightShifftAndInsert(index, num);
+	} 
 	else
 	{
-		m_realLen++;
-		m_maxLen = m_realLen + m_additionInLenght;
+		m_maxLen = m_realLen + m_additionInLength;
 
 		int* tmpArr = new int[m_maxLen];
-		delete m_mas;
+
+		for (int i = 0; i < m_realLen; ++i)
+			tmpArr[i] = m_mas[i];
+
+		delete [] m_mas;
 		m_mas = tmpArr;
 
-		setElem(index, num);
+		rightShifftAndInsert(index, num);
 	}
 }
 
-void Array::deleteElem(const int index)
+void Array::erase(const int index)
 {
 	if (!masAdmissible())
 		throw std::logic_error("Попытка удалить элемент из пустого массива");
@@ -87,28 +78,29 @@ void Array::deleteElem(const int index)
 	if (!indexAdmissible(index))
 		throw std::invalid_argument("Попытка удалить элемент за пределами массива");
 
-	if (maxDifferenceBetweenRealLenAndMaxLen < m_maxLen - m_realLen)
-	{
-		delElem(index);
-	}
-
+	if (maxDifferenceBetweenRealLenAndMaxLen > m_maxLen - m_realLen)
+		leftShiftAndErase(index);
 	else
 	{
-		delElem(index);
+		leftShiftAndErase(index);
 
-		m_realLen--;
-		m_maxLen = m_realLen + m_additionInLenght;
+		m_maxLen = m_realLen + m_additionInLength;
 
 		int* tmpArr = new int[m_maxLen];
-		delete m_mas;
+
+		for (int i = 0; i < m_realLen; ++i)
+			tmpArr[i] = m_mas[i];
+
+		delete [] m_mas;
 		m_mas = tmpArr;
 	}
 }
 
-void Array::delElem(const int index)
+void Array::leftShiftAndErase(const int index)
 {
 	for (int i = index; i < m_realLen - 1; ++i)
 		m_mas[i] = m_mas[i + 1];
+	m_realLen--;
 }
 
 int Array::getIndexElem(const int num) const
@@ -157,12 +149,71 @@ int Array::getLen() const
 	return m_realLen;
 }
 
-void Array::setElem(const int index, const int num)
+void Array::rightShifftAndInsert(const int index, const int num)
 {
 	for (int i = m_realLen; i > index; --i)
 		m_mas[i] = m_mas[i - 1];
 
 	m_mas[index] = num;
+	m_realLen++;
+}
+
+bool Array::remove(const int num)
+{
+	for (int i = 0; i < m_realLen; ++i)
+	{
+		if (m_mas[i] == num)
+		{
+			erase(i);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Array::rightShift(int index, int step)
+{
+	for (int i = m_realLen; i > index; --i)
+		m_mas[i] = m_mas[i - step];
+
+	for (int i = 0; i <= index; ++i)
+		m_mas[i] = 0;
+}
+
+void Array::leftShift(int index, int step)
+{
+	for (int i = 0; i < index; ++i)
+		m_mas[i] = m_mas[i - step];
+
+	for (int i = m_realLen; i > m_realLen - index; --i)
+		m_mas[i] = 0;
+}
+
+void Array::randomArray()
+{
+	srand(time(0));
+
+	for (int i = 0; i < m_realLen; ++i)
+		m_mas[i] = -100 + rand() % 201;
+}
+void Array::randomArrayToUp()
+{
+	srand(time(0));
+
+	m_mas[0] = -100 + rand() % 201;
+
+	for (int i = 1; i < m_realLen; ++i)
+		m_mas[i] = m_mas[i - 1] + rand() % 20;
+}
+void Array::randomArrayToDown()
+{
+	srand(time(0));
+
+	m_mas[0] = -100 + rand() % 201;
+
+	for (int i = 1; i < m_realLen; ++i)
+		m_mas[i] = m_mas[i - 1] + rand() % 20;
 }
 
 std::ostream& operator << (std::ostream& masOut, Array arr)
@@ -175,26 +226,109 @@ std::ostream& operator << (std::ostream& masOut, Array arr)
 
 std::istream& operator >> (std::istream& masIn, Array arr)
 {
+	std::cout << "Enter the number of elements: ";
+	std::cin >> arr.m_realLen;
+	arr.m_maxLen = arr.m_realLen + arr.m_additionInLength;
+
+	delete[] arr.m_mas;
+	arr.m_mas = new int[arr.m_maxLen];
+
+	std::cout << std::endl << "Enter the number: ";
 	for (int i = 0; i < arr.m_realLen; ++i)
 		masIn >> arr.m_mas[i];
+
 	return masIn;
 }
 
-int& Array::operator [] (int index)
+int& Array::operator [] (const int index)
 {
-	if (indexAdmissible(index) and masAdmissible())
+	if (indexAdmissible(index) and index != m_realLen)
 		return m_mas[index];
 }
 
 Array& Array::operator -= (const int index)
 {
-	deleteElem(index);
+	erase(index);
+	return *this;
+}
+
+Array Array::operator - (const int num)
+{
+	Array arr(*this);
+	arr.remove(num);
+
+	return arr;
+}
+
+Array& Array::operator	= (const Array& otherMas)
+{
+	if (*this == otherMas)
+		return *this;
+	
+	m_realLen = otherMas.m_realLen;
+	m_maxLen = otherMas.m_maxLen;
+
+	delete[] m_mas;
+	m_mas = new int[m_realLen];
+
+	for (int i = 0; i < m_realLen; i++)
+		m_mas[i] = otherMas.m_mas[i];
+
+}
+
+Array Array::operator + (const int num) const
+{
+	Array arr(*this);
+	arr += num;
+
+	return arr;
+}
+
+Array& Array::operator += (const int num)
+{
+	insert(m_realLen, num);
+
+	return *this;
+}
+
+bool Array::operator == (const Array& otherMas) const
+{
+	if (m_realLen != otherMas.m_realLen)
+		return false;
+
+	for (int i = 0; i < m_realLen; ++i)
+		if (m_mas[i] != otherMas.m_mas[i])
+			return false;
+
+	return true;
+}
+
+bool Array::operator != (const Array& otherMas) const
+{
+	if (*this == otherMas)
+		return false;
+	return true;
+}
+
+Array Array::operator + (const Array& otherMas) const
+{
+	Array arr(*this);
+	arr += otherMas;
+
+	return arr;
+}
+
+Array& Array::operator	+= (const Array& otherMas)
+{
+	for (int i = 0; i < otherMas.m_realLen; ++i)
+		insert(m_realLen, otherMas.m_mas[i]);
+
 	return *this;
 }
 
 bool Array::indexAdmissible(const int index) const
 {
-	if (index >= 0 and index < m_realLen)
+	if (index >= 0 and index <= m_realLen)
 		return true;
 	return false;
 }
@@ -215,15 +349,20 @@ int main()
 
 	Array* arr = new Array(mas, len);
 
-		std::cout << arr->getLen() << std::endl;
-		std::cout << *arr;
-		std::cout << arr->getMaxElem();
-		std::cout << arr->getMinElem() << std::endl;
+	std::cout << arr->getLen() << std::endl;
+	std::cout << *arr << std::endl;
+	std::cout << arr->getMaxElem() << std::endl;
+	std::cout << arr->getMinElem() << std::endl;
 
-		for (int i = 0; i < 6; ++i)
-		{
-			arr->addElem(i, i + 10);
-		}
+	for (int i = 0; i < 6; ++i)
+	{
+		arr->insert(i + 10, i + 10);
+		std::cout << *arr << std::endl;
+	}
 
-	std::cout << *arr;
+	for (int i = 0; i < len + 6; i++)
+	{
+		arr->erase(0);
+		std::cout << *arr << std::endl;
+	}
 }
