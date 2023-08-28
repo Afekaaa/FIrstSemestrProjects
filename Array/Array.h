@@ -13,7 +13,7 @@ public:
 	Array(const Array& otherMas);
 	~Array();
 
-	void sort(); //ToDo
+	void sort(); 
 	void addElem(const int index, const int num);
 	void deleteElem(const int index);
 
@@ -31,8 +31,12 @@ public:
 	Array& operator -= (const int index);
 
 	Array& operator	= (const Array& otherMas);
-	Array& operator	+ (const Array& otherMas);
+	Array operator	+ (const int num) const;
+	Array& operator	+= (const int num);
+
+	Array operator + (const Array& otherMas) const;
 	Array& operator	+= (const Array& otherMas);
+
 	bool operator == (const Array& otherMas) const;
 	bool operator != (const Array& otherMas) const;
 

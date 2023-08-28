@@ -48,7 +48,7 @@ void Array::sort()
 void Array::addElem(const int index, const int num)
 {
 	if (!indexAdmissible(index))
-		throw std::range_error("Index out of range");
+		throw std::out_of_range("Index out of range");
 
 	if (m_realLen < m_maxLen)
 	{
@@ -185,6 +185,72 @@ Array& Array::operator -= (const int index)
 	return *this;
 }
 
+Array& Array::operator	= (const Array& otherMas)
+{
+	if (*this == otherMas)
+		return *this;
+	
+	m_realLen = otherMas.m_realLen;
+	m_maxLen = otherMas.m_maxLen;
+
+	delete[] m_mas;
+	m_mas = new int[m_realLen];
+
+	for (int i = 0; i < m_realLen; i++)
+		m_mas[i] = otherMas.m_mas[i];
+
+}
+
+Array Array::operator + (const int num) const
+{
+	Array arr(*this);
+	arr += num;
+
+	return arr;
+}
+
+Array& Array::operator += (const int num)
+{
+	addElem(m_realLen, num);
+
+	return *this;
+}
+
+bool Array::operator == (const Array& otherMas) const
+{
+	if (m_realLen != otherMas.m_realLen)
+		return false;
+
+	for (int i = 0; i < m_realLen; ++i)
+		if (m_mas[i] != otherMas.m_mas[i])
+			return false;
+
+	return true;
+}
+
+bool Array::operator != (const Array& otherMas) const
+{
+	if (*this == otherMas)
+		return false;
+	return true;
+}
+
+Array Array::operator + (const Array& otherMas) const
+{
+	Array arr(*this);
+	arr += otherMas;
+
+	return arr;
+}
+
+Array& Array::operator	+= (const Array& otherMas)
+{
+	for (int i = 0; i < otherMas.m_realLen; ++i)
+		addElem(m_realLen, otherMas.m_mas[i]);
+
+	return *this;
+}
+
 bool Array::indexAdmissible(const int index) const
 {
 	if (index >= 0 and index <= m_realLen)
@@ -216,6 +282,12 @@ int main()
 	for (int i = 0; i < 6; ++i)
 	{
 		arr->addElem(i + 10, i + 10);
-		std::cout << *arr;
+		std::cout << *arr << std::endl;
+	}
+
+	for (int i = 0; i < len + 6; i++)
+	{
+		arr->deleteElem(0);
+		std::cout << *arr << std::endl;
 	}
 }
