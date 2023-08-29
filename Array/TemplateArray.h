@@ -36,11 +36,18 @@ public:
 	bool operator != (TemplateArray otherArray) const;
 
 private:
-	const int maxDifferenceBetweenRealLenAndMaxLen = 10;
+	const int m_maxDifferenceBetweenRealLenAndMaxLen = 10;
 	const int m_additionInLength = 5;
 
 	T* m_arr = nullptr;
 	int m_realLen = 0;
 	int m_maxLen = m_realLen + m_additionInLength;
+
+	bool indexAdmissible(const int index) const;
+	bool masAdmissible() const;
+
+	void rightShiftAndInsert(const int index, const T elem);
+	void leftShiftAndErase(const int index);
+
 };
 
