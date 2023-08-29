@@ -52,7 +52,7 @@ void Array::insert(const int index, const int num)
 
 	if (m_realLen < m_maxLen)
 	{
-		rightShifftAndInsert(index, num);
+		rightShiftAndInsert(index, num);
 	} 
 	else
 	{
@@ -66,7 +66,7 @@ void Array::insert(const int index, const int num)
 		delete [] m_mas;
 		m_mas = tmpArr;
 
-		rightShifftAndInsert(index, num);
+		rightShiftAndInsert(index, num);
 	}
 }
 
@@ -149,7 +149,7 @@ int Array::getLen() const
 	return m_realLen;
 }
 
-void Array::rightShifftAndInsert(const int index, const int num)
+void Array::rightShiftAndInsert(const int index, const int num)
 {
 	for (int i = m_realLen; i > index; --i)
 		m_mas[i] = m_mas[i - 1];
@@ -219,7 +219,7 @@ void Array::randomArrayToDown()
 std::ostream& operator << (std::ostream& masOut, Array arr)
 {
 	for (int i = 0; i < arr.m_realLen; ++i)
-		masOut << arr.m_mas[i] << " ";
+		std::cout << arr.m_mas[i] << " ";
 
 	return masOut;
 }
@@ -235,7 +235,7 @@ std::istream& operator >> (std::istream& masIn, Array arr)
 
 	std::cout << std::endl << "Enter the number: ";
 	for (int i = 0; i < arr.m_realLen; ++i)
-		masIn >> arr.m_mas[i];
+		std::cin >> arr.m_mas[i];
 
 	return masIn;
 }

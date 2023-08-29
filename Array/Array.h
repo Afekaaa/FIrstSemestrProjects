@@ -59,7 +59,7 @@ private:
 	int m_maxLen = m_realLen + m_additionInLength;
 
 	bool indexAdmissible(const int index) const;
-	void rightShifftAndInsert(const int index, const int num);
+	void rightShiftAndInsert(const int index, const int num);
 	void leftShiftAndErase(const int index);
 
 };
