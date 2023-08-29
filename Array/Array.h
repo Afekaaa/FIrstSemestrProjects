@@ -18,7 +18,7 @@ public:
 	void insert(const int index, const int num);
 	void erase(const int index);
 
-	int getIndexElem(const int num) const;
+	int find(const int num) const;
 	int getMinElem() const;
 	int getMaxElem() const;
 	int getLen() const;
@@ -51,7 +51,7 @@ public:
 	bool operator != (const Array& otherMas) const;
 
 private:
-	const int maxDifferenceBetweenRealLenAndMaxLen = 10;
+	const int m_maxDifferenceBetweenRealLenAndMaxLen = 10;
 	const int m_additionInLength = 5;
 
 	int* m_mas = nullptr;

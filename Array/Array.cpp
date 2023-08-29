@@ -78,7 +78,7 @@ void Array::erase(const int index)
 	if (!indexAdmissible(index))
 		throw std::invalid_argument("Попытка удалить элемент за пределами массива");
 
-	if (maxDifferenceBetweenRealLenAndMaxLen > m_maxLen - m_realLen)
+	if (m_maxDifferenceBetweenRealLenAndMaxLen > m_maxLen - m_realLen)
 		leftShiftAndErase(index);
 	else
 	{
@@ -103,7 +103,7 @@ void Array::leftShiftAndErase(const int index)
 	m_realLen--;
 }
 
-int Array::getIndexElem(const int num) const
+int Array::find(const int num) const
 {
 	int index = -1;
 
