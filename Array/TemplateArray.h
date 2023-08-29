@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 template <class T>
 class TemplateArray
 {
@@ -11,8 +13,8 @@ public:
 
 	int find(T elem) const;
 
-	friend std::ostream operator << (std::ostream arrOut, TemplateArr arr);
-	friend std::istream operator << (std::istream arrOut, TemplateArr arr);
+	friend std::ostream operator << (std::ostream arrOut, TemplateArray array);
+	friend std::istream operator << (std::istream arrIn, TemplateArray array);
 
 	void insert(int index, T elem);
 

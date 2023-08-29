@@ -4,7 +4,7 @@ template<class T>
 TemplateArray<T>::TemplateArray(const TemplateArray& otherArray)
 {
 	m_realLen = otherArray.m_realLen;
-	m_maxLem = otherArray.m_maxLen;
+	m_maxLen = otherArray.m_maxLen;
 
 	m_arr = new T[m_maxLen];
 
@@ -41,4 +41,28 @@ int TemplateArray<T>::find(T elem) const
 }
 
 template<class T>
+std::ostream operator << (std::ostream arrOut, TemplateArray<T> array)
+{
+	for (int i = 0; i < array.m_reelLen; ++i)
+		arrOut << array.m_arr[i] << " ";
+
+	return arrOut;
+}
+
+template<class T>
+std::istream operator << (std::istream arrIn, TemplateArray<T> array)
+{
+	std::cout << "Enter the number of elements: ";
+	std::cin >> array.m_realLen;
+	array.m_maxLen = array.m_realLen + array.m_additionInLength;
+
+	delete[] array.m_mas;
+	array.m_mas = new int[array.m_maxLen];
+
+	std::cout << std::endl << "Enter the elements: ";
+	for (int i = 0; i < array.m_realLen; ++i)
+		arrIn >> array.m_mas[i];
+
+	return arrIn;
+}
 
