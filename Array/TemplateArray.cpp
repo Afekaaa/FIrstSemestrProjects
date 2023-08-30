@@ -151,6 +151,73 @@ bool TemplateArray<T>::remove(T elem)
 	return false;
 }
 
+template<class T>
+void TemplateArray<T>::leftShift(int index, int step)
+{
+	T* tmpArr = new T[m_maxLen];
+
+	for (int i = m_realLen - 1; i > index; --i)
+		tmpArr[i] = m_arr[i];
+	for (int i = index, j = index - step; j > 0; --i, --j)
+		tmpArr[i] = m_arr[j];
+	for (int i = index - step, j = index; i > 0; --i, --j)
+		tmpArr[i] = m_arr[j];
+
+	delete[] m_arr;
+	m_arr = tmpArr;
+}
+
+template<class T>
+void TemplateArray<T>::rightShift(int index, int step)
+{
+	T* tmpArr = new T[m_maxLen];
+
+	for (int i = 0; i > index; ++i)
+		tmpArr[i] = m_arr[i];
+
+	for (int i = index, j = m_realLen - step - 1; j < m_realLen; ++i, ++j)
+		tmpArr[i] = m_arr[j];
+
+	for (int i = index + step, j = index; i < m_realLen; ++i, ++j)
+		tmpArr[i] = m_arr[j];
+
+	delete[] m_arr;
+
+	m_arr = tmpArr;
+}
+
+template<class T>
+T TemplateArray<T>::max() const
+{
+	if (!masAdmissible())
+		throw std::logic_error("Отправлен запрос на получение максимального элемента из пустого массива.");
+
+	T maxElem = m_arr[0];
+
+	for (int i = 1; i < m_realLen; ++i)
+		if (m_arr[i] > maxElem)
+			maxElem = m_arr[i];
+
+	return maxElem;
+}
+
+template<class T>
+T TemplateArray<T>::min() const
+{
+	if (!masAdmissible())
+		throw std::logic_error("Отправлен запрос на получение минимального элемента из пустого массива.");
+
+	int minElem = m_arr[0];
+
+	for (int i = 1; i < m_realLen; ++i)
+		if (m_arr[i] < minElem)
+			minElem = m_arr[i];
+
+	return minElem;
+}
+
+void sort();
+
 template <class T>
 bool TemplateArray<T>::indexAdmissible(const int index) const
 {
@@ -165,4 +232,96 @@ bool TemplateArray<T>::masAdmissible() const
 	if (m_realLen)
 		return true;
 	return false;
+}
+
+template <class T>
+TemplateArray<T>& TemplateArray<T>::operator -= (int index)
+{
+	erase(index);
+	return *this;
+}
+
+template <class T>
+TemplateArray<T> TemplateArray<T>::operator - (T elem) const
+{
+	remove(elem);
+	return *this;
+}
+
+template <class T>
+T& TemplateArray<T>::operator [] (int index)
+{
+	if (!masAdmissible())
+		throw std::logic_error("Попытка получить элемент из пустого массива");
+
+	if (!indexAdmissible(index))
+		throw std::invalid_argument("Попытка получить элемент за пределами массива");
+	return m_arr[index];
+}
+
+template <class T>
+TemplateArray<T>& TemplateArray<T>::operator = (TemplateArray otherArray)
+{
+	if (*this == otherArray)
+		return *this;
+
+	m_realLen = otherArray.m_realLen;
+	m_maxLen = otherArray.m_maxLen;
+
+	delete[] m_arr;
+
+	m_arr = new T[m_maxLen];
+
+	for (int i = 0; i < m_realLen; ++i)
+		m_arr[i] = otherArray.m_arr[i];
+}
+
+template <class T>
+TemplateArray<T>& TemplateArray<T>::operator += (T elem)
+{
+	insert(m_realLen, elem);
+
+	return *this;
+}
+
+template <class T>
+TemplateArray<T> TemplateArray<T>::operator + (T elem) const
+{
+	TemplateArray arr(m_arr);
+	return arr += elem;;
+}
+
+template <class T>
+TemplateArray<T>& TemplateArray<T>::operator += (TemplateArray otherArray)
+{
+	for (int i = 0; i < otherArray.m_realLen; ++i)
+		m_arr += otherArray.m_arr[i];
+}
+
+template <class T>
+TemplateArray<T> TemplateArray<T>::operator + (TemplateArray otherArray) const
+{
+	TemplateArray arr(m_arr);
+	return arr += otherArray;
+}
+
+template <class T>
+bool TemplateArray<T>::operator == (TemplateArray otherArray) const
+{
+	if (m_realLen != otherArray.m_realLen)
+		return false;
+
+	for (int i = 0; i < m_realLen; ++i)
+		if (m_arr[i] != otherArray.m_arr[i])
+			return false;
+
+	return true;
+}
+
+template <class T>
+bool TemplateArray<T>::operator != (TemplateArray otherArray) const
+{
+	if (*this == otherArray)
+		return false;
+	return true;
 }

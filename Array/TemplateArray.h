@@ -24,6 +24,10 @@ public:
 	void leftShift(int index, int step);
 	void rightShift(int index, int step);
 
+	T max() const;
+	T min() const;
+	void sort();
+
 	TemplateArray& operator -= (int index);
 	TemplateArray operator - (T elem) const;
 	T& operator [] (int index);
