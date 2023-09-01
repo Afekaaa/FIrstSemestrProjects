@@ -141,6 +141,14 @@ void TemplateArray<T>::leftShiftAndErase(const int index)
 	m_realLen--;
 }
 
+template<class T>
+void TemplateArray<T>::swap(T& a, T& b)
+{
+	T c = a;
+	a = b;
+	b = c;
+}
+
 template <class T>
 bool TemplateArray<T>::remove(T elem)
 {
@@ -220,7 +228,26 @@ T TemplateArray<T>::min() const
 	return minElem;
 }
 
-void sort();
+template <class T>
+void TemplateArray<T>::sort()
+{
+	bool notSwap;
+	for (int i = 0; i < m_realLen - 1; ++i)
+	{
+		notSwap = true;
+		for (int j = i; j < m_realLen; ++j)
+		{
+			if (m_arr[i] > m_arr[j])
+			{
+				swap(m_arr[i], m_arr[j]);
+				notSwap = false;
+			}
+		}
+
+		if (notSwap)
+			break;
+	}
+}
 
 template <class T>
 bool TemplateArray<T>::indexAdmissible(const int index) const

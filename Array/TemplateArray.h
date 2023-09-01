@@ -53,5 +53,6 @@ private:
 	void rightShiftAndInsert(const int index, const T elem);
 	void leftShiftAndErase(const int index);
 
+	void swap(T& a, T& b);
 };
 
