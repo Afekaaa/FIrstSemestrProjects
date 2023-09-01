@@ -167,7 +167,7 @@ template<class T>
 void TemplateArray<T>::rightShift(int index, int step)
 {
 	if (step == 0)
-		retutn;
+		return;
 
 	if (index + step >= m_realLen)
 		step = step % (m_realLen - index);
@@ -195,7 +195,7 @@ void TemplateArray<T>::leftShift(int index, int step)
 {
 
 	if (step == 0)
-		retutn;
+		return;
 
 	if (index + step >= m_realLen)
 		step = step % (m_realLen - index);

@@ -1,5 +1,9 @@
 ﻿#include "Array.h"
 
+#ifdef _DEBUG
+#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
+#endif 
 
 Array::Array()
 {
@@ -10,8 +14,8 @@ Array::Array()
 
 Array::Array(const int len)
 {
-	m_maxLen = len + m_additionInLength;
 	m_realLen = len;
+	m_maxLen = m_realLen + m_additionInLength;
 	m_mas = new int[m_maxLen];
 }
 
@@ -28,7 +32,7 @@ Array::Array(const int* mas, const int len)
 Array::Array(const Array& otherMas)
 {
 	m_realLen = otherMas.m_realLen;
-	m_maxLen = m_realLen + m_additionInLength;
+	m_maxLen = otherMas.m_maxLen;
 	m_mas = new int[m_maxLen];
 
 	for (int i = 0; i < m_realLen; ++i)
@@ -37,7 +41,7 @@ Array::Array(const Array& otherMas)
 
 Array::~Array()
 {
-	delete [] m_mas;
+	delete[] m_mas;
 }
 
 void Array::sort()
@@ -57,13 +61,12 @@ void Array::insert(const int index, const int num)
 	else
 	{
 		m_maxLen = m_realLen + m_additionInLength;
-
 		int* tmpArr = new int[m_maxLen];
 
 		for (int i = 0; i < m_realLen; ++i)
 			tmpArr[i] = m_mas[i];
 
-		delete [] m_mas;
+		delete[] m_mas;
 		m_mas = tmpArr;
 
 		rightShiftAndInsert(index, num);
@@ -75,7 +78,7 @@ void Array::erase(const int index)
 	if (!notEmpty())
 		throw std::logic_error("Попытка удалить элемент из пустого массива");
 
-	if (!indexAdmissible(index))
+	if (!indexAdmissible(index) or index == m_realLen)
 		throw std::invalid_argument("Попытка удалить элемент за пределами массива");
 
 	if (m_maxDifferenceBetweenRealLenAndMaxLen > m_maxLen - m_realLen)
@@ -300,11 +303,10 @@ Array& Array::operator	= (const Array& otherMas)
 	m_maxLen = otherMas.m_maxLen;
 
 	delete[] m_mas;
-	m_mas = new int[m_realLen];
+	m_mas = new int[m_maxLen];
 
 	for (int i = 0; i < m_realLen; i++)
 		m_mas[i] = otherMas.m_mas[i];
-
 }
 
 Array Array::operator + (const int num) const
@@ -373,13 +375,16 @@ bool Array::notEmpty() const
 
 int main()
 {
-	const int len = 10;
+	_CrtMemState _ms;
+	_CrtMemCheckpoint(&_ms);
+
+	const int len = 20;
 	int* mas = new int[len];
 	for (int i = 0; i < len; ++i)
 		mas[i] = i;
 
 	Array* arr = new Array(mas, len);
-	Array arr2 = *arr;
+	Array* arr2 = new Array(mas, len);
 
 	std::cout << arr->getLen() << std::endl;
 	std::cout << *arr << std::endl;
@@ -388,7 +393,7 @@ int main()
 
 	for (int i = 0; i < 6; ++i)
 	{
-		arr->insert(i + 10, i + 10);
+		arr->insert(i + len, i + len);
 		std::cout << *arr << std::endl;
 	}
 
@@ -401,23 +406,23 @@ int main()
 	*arr += 2;
 
 	std::cout << *arr + 4 + 5<< std::endl;
-	std::cout << *arr + arr2 << std::endl;
-	std::cout << arr2 - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 << std::endl;
+	std::cout << *arr + *arr2 << std::endl;
+	std::cout << *arr2 - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 << std::endl;
 
-	/*Array arr3;
+	Array arr3;
 
 	std::cin >> arr3;
 	std::cout << arr3 << std::endl;
 	arr3.sort();
-	std::cout << arr3 << std::endl;*/
+	std::cout << arr3 << std::endl;
 
-	arr2[4] = 100;
+	arr2->operator[](4) = 100;
 
-	std::cout << arr2 << std::endl;
-	arr2.remove(5);
-	std::cout << arr2 << std::endl;
-	arr2.remove(30);
-	std::cout << arr2 << std::endl;
+	std::cout << *arr2 << std::endl;
+	arr2->remove(5);
+	std::cout << *arr2 << std::endl;
+	arr2->remove(30);
+	std::cout << *arr2 << std::endl;
 
 	Array arr4(mas, len);
 
@@ -442,4 +447,11 @@ int main()
 	std::cout << arr4 << std::endl;
 	arr4.leftShift(6, 100);
 	std::cout << arr4 << std::endl;
+
+	delete[] mas;
+	delete arr;
+	delete arr2;
+
+	_CrtMemDumpAllObjectsSince(&_ms);
+	return 0;
 }
