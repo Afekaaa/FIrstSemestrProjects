@@ -164,15 +164,26 @@ bool TemplateArray<T>::remove(T elem)
 }
 
 template<class T>
-void TemplateArray<T>::leftShift(int index, int step)
+void TemplateArray<T>::rightShift(int index, int step)
 {
+	if (step == 0)
+		retutn;
+
+	if (index + step >= m_realLen)
+		step = step % (m_realLen - index);
+
+	if (!indexAdmissible(index) or index == m_realLen)
+		throw std::out_of_range("index is out of range of array");
+
 	T* tmpArr = new T[m_maxLen];
 
-	for (int i = m_realLen - 1; i > index; --i)
+	for (int i = 0; i < index; ++i)
 		tmpArr[i] = m_arr[i];
-	for (int i = index, j = index - step; j > 0; --i, --j)
+
+	for (int i = m_realLen - 1, j = m_realLen - step - 1; j >= index; --i, --j)
 		tmpArr[i] = m_arr[j];
-	for (int i = index - step, j = index; i > 0; --i, --j)
+
+	for (int i = index, j = m_realLen - step; j < m_realLen; ++i, ++j)
 		tmpArr[i] = m_arr[j];
 
 	delete[] m_arr;
@@ -180,21 +191,30 @@ void TemplateArray<T>::leftShift(int index, int step)
 }
 
 template<class T>
-void TemplateArray<T>::rightShift(int index, int step)
+void TemplateArray<T>::leftShift(int index, int step)
 {
+
+	if (step == 0)
+		retutn;
+
+	if (index + step >= m_realLen)
+		step = step % (m_realLen - index);
+
+	if (!indexAdmissible(index) or index == m_realLen)
+		throw std::out_of_range("index is out of range of array");
+
 	T* tmpArr = new T[m_maxLen];
 
-	for (int i = 0; i > index; ++i)
+	for (int i = 0; i < index; ++i)
 		tmpArr[i] = m_arr[i];
 
-	for (int i = index, j = m_realLen - step - 1; j < m_realLen; ++i, ++j)
+	for (int i = index, j = index + step; j < m_realLen; ++i, ++j)
 		tmpArr[i] = m_arr[j];
 
-	for (int i = index + step, j = index; i < m_realLen; ++i, ++j)
+	for (int i = m_realLen - step, j = index; i < m_realLen; ++i, ++j)
 		tmpArr[i] = m_arr[j];
 
 	delete[] m_arr;
-
 	m_arr = tmpArr;
 }
 
