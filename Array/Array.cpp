@@ -160,15 +160,13 @@ void Array::rightShiftAndInsert(const int index, const int num)
 
 bool Array::remove(const int num)
 {
-	for (int i = 0; i < m_realLen; ++i)
-	{
-		if (m_mas[i] == num)
-		{
-			erase(i);
-			return true;
-		}
-	}
+	int index = find(num);
 
+	if (index != -1)
+	{
+		erase(index);
+		return true;
+	}
 	return false;
 }
 
