@@ -180,11 +180,17 @@ void Array::rightShift(int index, int step)
 	if (!indexAdmissible(index) or index == m_realLen)
 		throw std::out_of_range("index is out of range of array");
 
-	for (int i = m_realLen - 1; i > index; --i)
-		m_mas[i] = m_mas[i - step];
+	if (index + step >= m_realLen)
+		for (int i = index; i < m_realLen; ++i)
+			m_mas[i] = 0;
+	else
+	{
+		for (int i = m_realLen - 1; i - step >= index; --i)
+			m_mas[i] = m_mas[i - step];
 
-	for (int i = index; i <= index + step - 1; ++i)
-		m_mas[i] = 0;
+		for (int i = index; i < index + step; ++i)
+			m_mas[i] = 0;
+	}
 }
 
 void Array::leftShift(int index, int step)
@@ -195,11 +201,18 @@ void Array::leftShift(int index, int step)
 	if (!indexAdmissible(index) or index == m_realLen)
 		throw std::out_of_range("index is out of range of array");
 
-	for (int i = 0; i < index; ++i)
-		m_mas[i] = m_mas[i + step];
+	step = std::abs(step);
 
-	for (int i = m_realLen; i > m_realLen - index; --i)
-		m_mas[i] = 0;
+	if (index + step >= m_realLen)
+		for (int i = index; i < m_realLen; ++i)
+			m_mas[i] = 0;
+	else
+	{
+		for (int i = index; i + step < m_realLen; ++i)
+			m_mas[i] = m_mas[i + step];
+		for (int i = m_realLen - step; i < m_realLen; ++i)
+			m_mas[i] = 0;
+	}
 }
 
 void Array::randomArray()
@@ -393,12 +406,12 @@ int main()
 	std::cout << *arr + arr2 << std::endl;
 	std::cout << arr2 - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 << std::endl;
 
-	Array arr3;
+	/*Array arr3;
 
 	std::cin >> arr3;
 	std::cout << arr3 << std::endl;
 	arr3.sort();
-	std::cout << arr3 << std::endl;
+	std::cout << arr3 << std::endl;*/
 
 	arr2[4] = 100;
 
@@ -408,14 +421,27 @@ int main()
 	arr2.remove(30);
 	std::cout << arr2 << std::endl;
 
-	arr2.leftShift(0, 1);
-	std::cout << arr2 << std::endl;
-	arr2.rightShift(3, 100);
-	std::cout << arr2 << std::endl;
-	arr2.leftShift(6, 100);
-	std::cout << arr2 << std::endl;
-	arr2.rightShift(3, 2);
-	std::cout << arr2 << std::endl;
-	arr2.leftShift(6, 2);
-	std::cout << arr2 << std::endl;
+	Array arr4(mas, len);
+
+	std::cout << std::endl << arr4 << std::endl;
+
+	arr4.rightShift(3, 2);
+	std::cout << arr4 << std::endl;
+	arr4.leftShift(6, 2);
+	std::cout << arr4 << std::endl;
+
+	arr4.leftShift(0, 1);
+	std::cout << arr4 << std::endl;
+	arr4.rightShift(0, 1);
+	std::cout << arr4 << std::endl;
+
+	arr4.leftShift(arr4.getLen() - 1, 1);
+	std::cout << arr4 << std::endl;
+	arr4.rightShift(arr4.getLen() - 1, 1);
+	std::cout << arr4 << std::endl;
+
+	arr4.rightShift(3, 100);
+	std::cout << arr4 << std::endl;
+	arr4.leftShift(6, 100);
+	std::cout << arr4 << std::endl;
 }
