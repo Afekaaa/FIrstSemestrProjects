@@ -42,7 +42,7 @@ Array::~Array()
 
 void Array::sort()
 {
-	hoarSort(m_mas, 0, m_realLen);
+	hoarSort(m_mas, 0, m_realLen - 1);
 }
 
 void Array::insert(const int index, const int num)
@@ -72,7 +72,7 @@ void Array::insert(const int index, const int num)
 
 void Array::erase(const int index)
 {
-	if (!masAdmissible())
+	if (!notEmpty())
 		throw std::logic_error("Попытка удалить элемент из пустого массива");
 
 	if (!indexAdmissible(index))
@@ -118,7 +118,7 @@ int Array::find(const int num) const
 
 int Array::getMinElem() const
 {
-	if (!masAdmissible())
+	if (!notEmpty())
 		throw std::logic_error("Отправлен запрос на получение минимального элемента из пустого массива.");
 
 	int minElem = m_mas[0];
@@ -132,7 +132,7 @@ int Array::getMinElem() const
 
 int Array::getMaxElem() const
 {
-	if (!masAdmissible())
+	if (!notEmpty())
 		throw std::logic_error("Отправлен запрос на получение максимального элемента из пустого массива.");
 
 	int maxElem = m_mas[0];
@@ -174,17 +174,29 @@ bool Array::remove(const int num)
 
 void Array::rightShift(int index, int step)
 {
-	for (int i = m_realLen; i > index; --i)
+	if (step == 0)
+		return;
+
+	if (!indexAdmissible(index) or index == m_realLen)
+		throw std::out_of_range("index is out of range of array");
+
+	for (int i = m_realLen - 1; i > index; --i)
 		m_mas[i] = m_mas[i - step];
 
-	for (int i = 0; i <= index; ++i)
+	for (int i = index; i <= index + step - 1; ++i)
 		m_mas[i] = 0;
 }
 
 void Array::leftShift(int index, int step)
 {
+	if (step == 0)
+		return;
+
+	if (!indexAdmissible(index) or index == m_realLen)
+		throw std::out_of_range("index is out of range of array");
+
 	for (int i = 0; i < index; ++i)
-		m_mas[i] = m_mas[i - step];
+		m_mas[i] = m_mas[i + step];
 
 	for (int i = m_realLen; i > m_realLen - index; --i)
 		m_mas[i] = 0;
@@ -197,6 +209,7 @@ void Array::randomArray()
 	for (int i = 0; i < m_realLen; ++i)
 		m_mas[i] = -100 + rand() % 201;
 }
+
 void Array::randomArrayToUp()
 {
 	srand(time(0));
@@ -206,6 +219,7 @@ void Array::randomArrayToUp()
 	for (int i = 1; i < m_realLen; ++i)
 		m_mas[i] = m_mas[i - 1] + rand() % 20;
 }
+
 void Array::randomArrayToDown()
 {
 	srand(time(0));
@@ -219,23 +233,29 @@ void Array::randomArrayToDown()
 std::ostream& operator << (std::ostream& masOut, Array arr)
 {
 	for (int i = 0; i < arr.m_realLen; ++i)
-		std::cout << arr.m_mas[i] << " ";
+		masOut << arr.m_mas[i] << " ";
 
 	return masOut;
 }
 
-std::istream& operator >> (std::istream& masIn, Array arr)
+std::istream& operator >> (std::istream& masIn, Array &arr)
 {
 	std::cout << "Enter the number of elements: ";
-	std::cin >> arr.m_realLen;
+	masIn >> arr.m_realLen;
 	arr.m_maxLen = arr.m_realLen + arr.m_additionInLength;
 
-	delete[] arr.m_mas;
+	if (arr.notEmpty())
+		delete[] arr.m_mas;
+
 	arr.m_mas = new int[arr.m_maxLen];
 
-	std::cout << std::endl << "Enter the number: ";
+	if (arr.m_realLen != 0)
+		std::cout << std::endl << "Enter the number: ";
+
 	for (int i = 0; i < arr.m_realLen; ++i)
-		std::cin >> arr.m_mas[i];
+		masIn >> arr.m_mas[i];
+
+	std::cout << std::endl;
 
 	return masIn;
 }
@@ -252,7 +272,7 @@ Array& Array::operator -= (const int index)
 	return *this;
 }
 
-Array Array::operator - (const int num)
+Array Array::operator - (const int num) const
 {
 	Array arr(*this);
 	arr.remove(num);
@@ -318,7 +338,7 @@ Array Array::operator + (const Array& otherMas) const
 	return arr;
 }
 
-Array& Array::operator	+= (const Array& otherMas)
+Array& Array::operator += (const Array& otherMas)
 {
 	for (int i = 0; i < otherMas.m_realLen; ++i)
 		insert(m_realLen, otherMas.m_mas[i]);
@@ -333,7 +353,7 @@ bool Array::indexAdmissible(const int index) const
 	return false;
 }
 
-bool Array::masAdmissible() const
+bool Array::notEmpty() const
 {
 	if (m_realLen)
 		return true;
@@ -348,6 +368,7 @@ int main()
 		mas[i] = i;
 
 	Array* arr = new Array(mas, len);
+	Array arr2 = *arr;
 
 	std::cout << arr->getLen() << std::endl;
 	std::cout << *arr << std::endl;
@@ -365,4 +386,36 @@ int main()
 		arr->erase(0);
 		std::cout << *arr << std::endl;
 	}
+
+	*arr += 2;
+
+	std::cout << *arr + 4 + 5<< std::endl;
+	std::cout << *arr + arr2 << std::endl;
+	std::cout << arr2 - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 << std::endl;
+
+	Array arr3;
+
+	std::cin >> arr3;
+	std::cout << arr3 << std::endl;
+	arr3.sort();
+	std::cout << arr3 << std::endl;
+
+	arr2[4] = 100;
+
+	std::cout << arr2 << std::endl;
+	arr2.remove(5);
+	std::cout << arr2 << std::endl;
+	arr2.remove(30);
+	std::cout << arr2 << std::endl;
+
+	arr2.leftShift(0, 1);
+	std::cout << arr2 << std::endl;
+	arr2.rightShift(3, 100);
+	std::cout << arr2 << std::endl;
+	arr2.leftShift(6, 100);
+	std::cout << arr2 << std::endl;
+	arr2.rightShift(3, 2);
+	std::cout << arr2 << std::endl;
+	arr2.leftShift(6, 2);
+	std::cout << arr2 << std::endl;
 }

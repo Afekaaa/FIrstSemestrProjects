@@ -23,7 +23,7 @@ public:
 	int getMaxElem() const;
 	int getLen() const;
 
-	bool masAdmissible() const;
+	bool notEmpty() const;
 
 	bool remove(const int num);
 
@@ -35,13 +35,13 @@ public:
 	void randomArrayToDown();
 
 	friend std::ostream& operator << (std::ostream& masOut, Array arr);
-	friend std::istream& operator >> (std::istream& masIn, Array arr);
+	friend std::istream& operator >> (std::istream& masIn, Array &arr);
 
 	int& operator [] (const int index);
 	Array& operator -= (const int index);
-	Array operator - (const int num);
+	Array operator - (const int num) const;
 	Array& operator	= (const Array& otherMas);
-	Array operator	+ (const int num) const;
+	Array operator + (const int num) const;
 	Array& operator	+= (const int num);
 
 	Array operator + (const Array& otherMas) const;
