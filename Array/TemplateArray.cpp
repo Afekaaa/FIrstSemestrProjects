@@ -50,16 +50,20 @@ std::ostream operator << (std::ostream arrOut, TemplateArray<T> array)
 }
 
 template<class T>
-std::istream operator << (std::istream arrIn, TemplateArray<T> array)
+std::istream operator << (std::istream arrIn, TemplateArray<T> &array)
 {
 	std::cout << "Enter the number of elements: ";
 	std::cin >> array.m_realLen;
 	array.m_maxLen = array.m_realLen + array.m_additionInLength;
 
-	delete[] array.m_mas;
+	if (array.notEmpty())
+		delete[] array.m_mas;
+
 	array.m_mas = new int[array.m_maxLen];
 
-	std::cout << std::endl << "Enter the elements: ";
+	if (array.m_realLen != 0)
+		std::cout << std::endl << "Enter the elements: ";
+
 	for (int i = 0; i < array.m_realLen; ++i)
 		std::cin >> array.m_mas[i];
 
@@ -95,7 +99,7 @@ void TemplateArray<T>::insert(int index, T elem)
 template<class T>
 void TemplateArray<T>::erase(const int index)
 {
-	if (!masAdmissible())
+	if (!notEmpty())
 		throw std::logic_error("Попытка удалить элемент из пустого массива");
 
 	if (!indexAdmissible(index))
@@ -189,7 +193,7 @@ void TemplateArray<T>::rightShift(int index, int step)
 template<class T>
 T TemplateArray<T>::max() const
 {
-	if (!masAdmissible())
+	if (!notEmpty())
 		throw std::logic_error("Отправлен запрос на получение максимального элемента из пустого массива.");
 
 	T maxElem = m_arr[0];
@@ -204,7 +208,7 @@ T TemplateArray<T>::max() const
 template<class T>
 T TemplateArray<T>::min() const
 {
-	if (!masAdmissible())
+	if (!notEmpty())
 		throw std::logic_error("Отправлен запрос на получение минимального элемента из пустого массива.");
 
 	int minElem = m_arr[0];
@@ -227,7 +231,7 @@ bool TemplateArray<T>::indexAdmissible(const int index) const
 }
 
 template <class T>
-bool TemplateArray<T>::masAdmissible() const
+bool TemplateArray<T>::notEmpty() const
 {
 	if (m_realLen)
 		return true;
@@ -251,7 +255,7 @@ TemplateArray<T> TemplateArray<T>::operator - (T elem) const
 template <class T>
 T& TemplateArray<T>::operator [] (int index)
 {
-	if (!masAdmissible())
+	if (!notEmpty())
 		throw std::logic_error("Попытка получить элемент из пустого массива");
 
 	if (!indexAdmissible(index))

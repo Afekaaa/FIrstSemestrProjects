@@ -14,7 +14,7 @@ public:
 	int find(T elem) const;
 
 	friend std::ostream operator << (std::ostream arrOut, TemplateArray array);
-	friend std::istream operator << (std::istream arrIn, TemplateArray array);
+	friend std::istream operator << (std::istream arrIn, TemplateArray &array);
 
 	void insert(int index, T elem);
 
@@ -48,7 +48,7 @@ private:
 	int m_maxLen = m_realLen + m_additionInLength;
 
 	bool indexAdmissible(const int index) const;
-	bool masAdmissible() const;
+	bool notEmpty() const;
 
 	void rightShiftAndInsert(const int index, const T elem);
 	void leftShiftAndErase(const int index);
