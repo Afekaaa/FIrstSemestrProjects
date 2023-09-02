@@ -1,5 +1,13 @@
 #include "TemplateArray.h"
 
+template <class T>
+TemplateArray<T>::TemplateArray()
+{
+	m_realLen = 0;
+	m_maxLen = m_realLen + m_additionInLength;
+	m_arr = new T[m_maxLen];
+}
+
 template<class T>
 TemplateArray<T>::TemplateArray(const TemplateArray& otherArray)
 {
@@ -53,7 +61,7 @@ template<class T>
 std::istream operator << (std::istream arrIn, TemplateArray<T> &array)
 {
 	std::cout << "Enter the number of elements: ";
-	std::cin >> array.m_realLen;
+	arrIn >> array.m_realLen;
 	array.m_maxLen = array.m_realLen + array.m_additionInLength;
 
 	if (array.notEmpty())
@@ -65,7 +73,7 @@ std::istream operator << (std::istream arrIn, TemplateArray<T> &array)
 		std::cout << std::endl << "Enter the elements: ";
 
 	for (int i = 0; i < array.m_realLen; ++i)
-		std::cin >> array.m_mas[i];
+		arrIn >> array.m_mas[i];
 
 	return arrIn;
 }
@@ -193,7 +201,6 @@ void TemplateArray<T>::rightShift(int index, int step)
 template<class T>
 void TemplateArray<T>::leftShift(int index, int step)
 {
-
 	if (step == 0)
 		return;
 
@@ -252,10 +259,11 @@ template <class T>
 void TemplateArray<T>::sort()
 {
 	bool notSwap;
+
 	for (int i = 0; i < m_realLen - 1; ++i)
 	{
 		notSwap = true;
-		for (int j = i; j < m_realLen; ++j)
+		for (int j = i + 1; j < m_realLen; ++j)
 		{
 			if (m_arr[i] > m_arr[j])
 			{
@@ -305,8 +313,9 @@ T& TemplateArray<T>::operator [] (int index)
 	if (!notEmpty())
 		throw std::logic_error("Попытка получить элемент из пустого массива");
 
-	if (!indexAdmissible(index))
+	if (!indexAdmissible(index) or index == m_realLen)
 		throw std::invalid_argument("Попытка получить элемент за пределами массива");
+
 	return m_arr[index];
 }
 
@@ -331,7 +340,6 @@ template <class T>
 TemplateArray<T>& TemplateArray<T>::operator += (T elem)
 {
 	insert(m_realLen, elem);
-
 	return *this;
 }
 
@@ -339,7 +347,7 @@ template <class T>
 TemplateArray<T> TemplateArray<T>::operator + (T elem) const
 {
 	TemplateArray arr(m_arr);
-	return arr += elem;;
+	return arr += elem;
 }
 
 template <class T>

@@ -6,7 +6,7 @@ template <class T>
 class TemplateArray
 {
 public:
-	TemplateArray() = default;
+	TemplateArray();
 	TemplateArray(const TemplateArray& otherArray);
 	TemplateArray(T* arr, const int len);
 	~TemplateArray();
