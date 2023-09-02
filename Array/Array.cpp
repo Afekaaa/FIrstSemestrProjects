@@ -409,7 +409,7 @@ int main()
 	std::cin >> arr3;
 	std::cout << arr3 << std::endl;
 	arr3.sort();
-	std::cout << arr3 << std::endl;*/
+	std::cout << arr3 << std::endl;/*/
 
 	arr2[4] = 100;
 
