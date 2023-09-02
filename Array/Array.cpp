@@ -1,4 +1,4 @@
-﻿#include "Array.h"
+#include "Array.h"
 
 #ifdef _DEBUG
 #include <crtdbg.h>
