@@ -351,3 +351,5 @@ MigrationBackup/
 *.filters
 
 Array/Array.vcxproj
+
+*.vcxproj
