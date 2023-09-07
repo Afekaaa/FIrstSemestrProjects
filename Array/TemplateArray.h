@@ -9,6 +9,7 @@ public:
 	TemplateArray() = default;
 	TemplateArray(const TemplateArray& otherArray);
 	TemplateArray(T* arr, const int len);
+	TemplateArray(T* arr, int len, int addition, int maxDifference);
 	~TemplateArray();
 
 	int find(T elem) const;

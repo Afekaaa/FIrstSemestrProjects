@@ -12,6 +12,20 @@ TemplateArray<T>::TemplateArray(const TemplateArray& otherArray)
 		m_arr[i] = otherArray.m_arr[i];
 }
 
+template <class T>
+TemplateArray<T>::TemplateArray(T* arr, int len, int addition, int maxDifference)
+{
+	m_realLen = len;
+	m_additionInLength = addition;
+	m_maxDifferenceBetweenRealLenAndMaxLen = maxDifference;
+	m_maxLen = m_realLen + m_additionInLength;
+
+	m_arr = new T[m_maxLen];
+
+	for (int i = 0; i < m_realLen; ++i)
+		m_arr[i] == arr[i];
+}
+
 template<class T>
 TemplateArray<T>::TemplateArray(T* arr, const int len)
 {
@@ -167,7 +181,7 @@ template<class T>
 void TemplateArray<T>::rightShift(int index, int step)
 {
 	if (step == 0)
-		retutn;
+		return;
 
 	if (index + step >= m_realLen)
 		step = step % (m_realLen - index);
@@ -195,7 +209,7 @@ void TemplateArray<T>::leftShift(int index, int step)
 {
 
 	if (step == 0)
-		retutn;
+		return;
 
 	if (index + step >= m_realLen)
 		step = step % (m_realLen - index);
