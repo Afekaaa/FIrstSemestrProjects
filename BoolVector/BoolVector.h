@@ -38,12 +38,10 @@ public:
 	BoolVector& operator = (const BoolVector otherVector);
 
 private:
-	const int m_additionInLength = sizeof(char);
+	int m_letterLen = sizeof(char);
 
-	TemplateArray<char> m_bits;
-	int m_realLen = 0;
-	int m_maxLen = m_realLen + m_additionInLength;
+	char* m_letters = nullptr;
+	int m_len = 0;
 
 	bool indexAdmissable(int index);
-	
 };
