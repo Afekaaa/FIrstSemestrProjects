@@ -38,10 +38,11 @@ public:
 	BoolVector& operator = (const BoolVector otherVector);
 
 private:
-	int m_letterLen = sizeof(char);
-
 	char* m_letters = nullptr;
-	int m_len = 0;
 
-	bool indexAdmissable(int index);
+	int m_len = 0;
+	int m_letterLen = sizeof(char);
+	int m_vectorLen = m_len * m_letterLen;
+
+	void indexAdmissable(int index);
 };

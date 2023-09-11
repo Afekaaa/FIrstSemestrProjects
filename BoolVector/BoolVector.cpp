@@ -44,10 +44,9 @@ friend std::ostream operator << (std::ostream vectorOut, BoolVector vector)
 {
 	for (int i = 0; i < m_len; ++i)
 	{
-		int mask = 1;
-		for (itn j = 0; i < m_letterLen; ++j)
+		for (int j = 0; i < m_vectorLen; ++j)
 		{
-
+			std::cout << vector[i] << " ";
 		}
 	}
 }
@@ -64,6 +63,8 @@ friend std::istream operator >> (std::istream vectorIn, BoolVector? vector)
 
 int boolVector::operator [] (int index)
 {
+	indexAdmissable(index);
+
 	if (index == 0)
 		return m_letters[m_len - 1] & 1;
 
@@ -83,6 +84,12 @@ int boolVector::operator [] (int index)
 
 	return m_letters[m_len - i - 1] & mask;
 
+}
+
+void BoolVector::indexAdmissable(int index)
+{
+	if (!(index >= 0 and index < m_vectorLen))
+		throw std::out_of_range("Index out of range");
 }
 
 int main()
