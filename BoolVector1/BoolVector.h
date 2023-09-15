@@ -1,4 +1,3 @@
-#include "..\Array\TemplateArray.h"
 #include <iostream>
 
 
@@ -21,7 +20,6 @@ public:
 	void bitReplacment(int index, int value);
 	void vectorReplacement(int value);
 
-	int vectorWeight() const;
 
 	int operator [](int index);
 	BoolVector operator & (const BoolVector otherVector) const;
@@ -45,4 +43,5 @@ private:
 	int m_vectorLen = m_len * m_letterLen;
 
 	void indexAdmissable(int index);
+	void getPosition(int& symbolsNum, int& mask, int index);
 };

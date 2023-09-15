@@ -18,7 +18,7 @@ BoolVector::BoolVector(const char* mas, const int len)
 
 BoolVector::BoolVector(const BoolVector otherVector)
 {
-	n_len = otherVector.m_len;
+	m_len = otherVector.m_len;
 
 	m_letters = new char[m_len];
 
@@ -42,26 +42,71 @@ BoolVector::~BoolVector()
 
 friend std::ostream operator << (std::ostream vectorOut, BoolVector vector)
 {
+	for (int i = 0; i < vector.m_vectorLen; ++i)
+	{
+		std::cout << vector[i] << " ";
+	}
+}
+
+friend std::istream operator >> (std::istream vectorIn, BoolVector vector)
+{
+	std::cout << "Enter the nuber of bits: ";
+	std::cin << vector.m_realLen;
+	vector.m_maxLen = vector.m_realLen + vector.m_additionInLength;
+
+
+}
+
+void BoolVector::inversion()
+{
+
 	for (int i = 0; i < m_len; ++i)
 	{
-		for (int j = 0; i < m_vectorLen; ++j)
+		int mask = 1;
+		for (int j = 0; j < m_letterLen - 1 and i * m_letterLen + j < m_vectorLen; ++j) //ToDo
 		{
-			std::cout << vector[i] << " ";
+			m_letters[m_i] ^= mask;
+			mask <<= 1;
 		}
 	}
 }
 
-friend std::istream operator >> (std::istream vectorIn, BoolVector? vector)
+void BoolVector::bitInvertion(int index)
 {
-	std::cout << "Enter the nuber of bits: ";
-	std::cin << m_realLen;
-	m_maxLen = m_realLen + m_additionInLength;
-	
-	
+
+
+	int mask = 1;
+	mask <<= index - 1;
+
 }
 
+void BoolVector::getPosition(int& symbolsNum, int& mask, int index)
+{
+	indexAdmissable(index);
 
-int boolVector::operator [] (int index)
+	if (index == 0)
+	{
+		symbolsNum = m_len - 1;
+		mask = 1;
+		return;
+	}
+
+	if (index % m_letterLen != 0)
+	{
+		symbolsNum = index / m_letterLen;
+		mask <<= index % m_letterLen - 1;
+	}
+	else
+	{
+		i = index / m_letterLen - 1;
+		mask <<= index % m_letterLen - 1;
+	}
+
+
+
+}
+
+int BoolVector::operator [] (int index)
 {
 	indexAdmissable(index);
 
