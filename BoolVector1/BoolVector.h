@@ -6,12 +6,12 @@ class BoolVector
 public:
 	BoolVector();
 	BoolVector(const char* mas, const int len);
-	BoolVector(const BoolVector otherBoolVector);
-	BoolVector(const int len);
+	BoolVector(const BoolVector& otherBoolVector);
+	BoolVector(const int len, const int bitValue);
 	~BoolVector() = default;
 
-	friend std::ostream operator << (std::ostream vectorOut, BoolVector vector);
-	friend std::istream operator >> (std::istream vectorIn, BoolVector vector);
+	friend std::ostream operator << (std::ostream& vectorOut, BoolVector vector);
+	friend std::istream operator >> (std::istream& vectorIn, BoolVector& vector);
 
 	void inversion();
 	void bitInvertion(int index);
