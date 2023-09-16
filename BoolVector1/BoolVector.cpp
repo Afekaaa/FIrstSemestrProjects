@@ -10,6 +10,9 @@ BoolVector::BoolVector()
 
 BoolVector::BoolVector(const char* mas, const int len)
 {
+	if (mas or len == 0)
+		throw std::invalid_argument("The vector length cannot be less than one");
+
 	m_len = len;
 	m_letters = new char[m_len];
 	m_vectorLen = m_len * m_letterLen;
@@ -31,6 +34,9 @@ BoolVector::BoolVector(const BoolVector& otherVector)
 
 BoolVector::BoolVector(const int len, const int bitValue = 0)
 {
+	if (len == 0)
+		throw std::invalid_argument("The vector length cannot be less than one");
+
 	m_vectorLen = len;
 
 	if (len % m_letterLen != 0)
@@ -60,19 +66,17 @@ void BoolVector::bitSet(const int index, const int bitValue) // на 4
 	else if (bitValue == 1)
 		m_letters[i] |= mask;
 	else
-		throw std::invalid_argument("Bit may can only 1 or 0 value");
+		throw std::invalid_argument("bit can be one or zero");
 }
 
 void BoolVector::inversion()
 {
-	for (int i = 0; i < m_len; ++i)
+	for (int i = 0; i < m_vectorLen; ++i)
 	{
-		int mask = 1;
-		for (int j = 0; j < m_letterLen - 1 and i * m_letterLen + j < m_vectorLen; ++j) //ToDo
-		{
-			m_letters[i] ^= mask;
-			mask <<= 1;
-		}
+		if (m_letters[i] == 0)
+			bitSet(i, 1);
+		else
+			bitSet(i, 0);
 	}
 }
 
@@ -159,7 +163,7 @@ void BoolVector::getPosition(int& symbolNum, int& mask, int index) const
 		symbolNum = m_len - 1;
 		mask = 1;
 	}
-	else if ((index + 1) % m_letterLen != 0)
+	else if ((index + 1) % m_letterLen == 0)
 	{
 		symbolNum = m_len - (index + 1) / m_letterLen;
 		mask <<= m_letterLen - 1;
@@ -173,10 +177,8 @@ void BoolVector::getPosition(int& symbolNum, int& mask, int index) const
 
 std::ostream& operator << (std::ostream& vectorOut, BoolVector& vector)
 {
-	for (int i = 0; i < vector.m_vectorLen; ++i)
-	{
+	for (int i = vector.m_vectorLen - 1; i >= 0; --i)
 		vectorOut << vector[i] << " ";
-	}
 
 	return vectorOut;
 }
@@ -186,29 +188,28 @@ std::istream& operator>> (std::istream& vectorIn, BoolVector& vector)
 	std::cout << "Enter the number of bits: ";
 
 	std::cin >> vector.m_vectorLen;
-	vector.m_len = vector.m_vectorLen / vector.m_letterLen;
+	if (vector.m_vectorLen % vector.m_letterLen != 0)
+		vector.m_len = vector.m_vectorLen / vector.m_letterLen + 1;
+	else
+		vector.m_len = vector.m_vectorLen / vector.m_letterLen;
 
-	if (vector.m_letters)
-		delete[] vector.m_letters;
+	delete[] vector.m_letters;
 
 	vector.m_letters = new char[vector.m_len];
+	for (int i =0; i < vector.m_len; ++i)
+		vector.m_letters[i] = char(0);
 
 	std::cout << "Enter the bits: ";
 
 	int bit = 0;
-	for (int i = 0; i < vector.m_len; ++i)
+	
+	for (int i = 0; i < vector.m_vectorLen; ++i)
 	{
-		vector.m_letters[i] = char(0);
+		std::cin >> bit;
 
-		for (int j = 0; j < vector.m_letterLen; ++j)
+		if (bit == 1)
 		{
-			std::cin >> bit;
-			if (bit)
-			{
-				bit <<= j;
-				vector.m_letters[i] &= bit;
-			}
-
+			vector.bitSet(i, bit);
 		}
 	}
 

@@ -30,7 +30,7 @@ private:
 	char* m_letters = nullptr;
 
 	int m_len = 0;
-	int m_letterLen = sizeof(char);
+	const int m_letterLen = sizeof(char) * 8;
 	int m_vectorLen = m_len * m_letterLen;
 
 	void indexAdmissable(int index) const;
