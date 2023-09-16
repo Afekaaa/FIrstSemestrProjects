@@ -77,15 +77,72 @@ void BoolVector::bitInvertion(int index)
 	m_letters[symbolNum] ^= mask;
 }
 
-BoolVector BoolVector::operator& (const BoolVector otherVector) const
+int BoolVector::weight() const
 {
-	BoolVector vector(*this);
+	int count = 0;
+	for (int i = 0; i < m_vectorLen; ++i)
+		count += this->operator[](i);
 
-	int vectorLen = std::min(m_vectorLen, otherVector.m_vectorLen);
-	int 
+	return count; 
 }
 
-void BoolVector::getPosition(int& symbolNum, int& mask, int index)
+BoolVector BoolVector::operator& (const BoolVector otherVector) const
+{
+	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
+
+	for (int i = 0; i < vector.m_vectorLen; ++i)
+	{
+		int mask = 1;
+		int j = 0;
+		if (this->operator[](i) == 1 and otherVector[i] == 1)
+		{
+			getPosition(j, mask, i);
+			vector.m_letters[j] |= mask;
+		}
+
+	}
+
+	return vector;
+}
+
+BoolVector BoolVector::operator | (const BoolVector otherVector) const
+{
+	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
+
+	for (int i = 0; i < vector.m_vectorLen; ++i)
+	{
+		int mask = 1;
+		int j = 0;
+		if (this->operator[](i) == 1 or otherVector[i] == 1)
+		{
+			getPosition(j, mask, i);
+			vector.m_letters[j] |= mask;
+		}
+
+	}
+
+	return vector;
+}
+
+BoolVector BoolVector::operator ^ (const BoolVector otherVector) const
+{
+	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
+
+	for (int i = 0; i < vector.m_vectorLen; ++i)
+	{
+		int mask = 1;
+		int j = 0;
+		if (this->operator[](i) == otherVector[i])
+		{
+			getPosition(j, mask, i);
+			vector.m_letters[j] |= mask;
+		}
+	}
+
+	return vector;
+}
+
+void BoolVector::getPosition(int& symbolNum, int& mask, int index) const
 {
 	indexAdmissable(index);
 
@@ -116,7 +173,7 @@ std::ostream& operator << (std::ostream& vectorOut, BoolVector vector)
 	return vectorOut;
 }
 
-std::istream& operator>>(std::istream& vectorIn, BoolVector& vector)
+std::istream& operator>> (std::istream& vectorIn, BoolVector& vector)
 {
 	std::cout << "Enter the number of bits: ";
 
@@ -150,18 +207,18 @@ std::istream& operator>>(std::istream& vectorIn, BoolVector& vector)
 	return vectorIn;
 }
 
-int BoolVector::operator [] (int index)
+int BoolVector::operator [] (int index) const
 {
 	int i = 0;
 	int mask = 1;
-	
 	getPosition(i, mask, index);
 
-	return m_letters[i] & mask;
+	if (m_letters[i] & mask)
+		return 1;
+	return 0;
 }
 
-
-void BoolVector::indexAdmissable(int index)
+void BoolVector::indexAdmissable(int index) const
 {
 	if (!(index >= 0 and index < m_vectorLen))
 		throw std::out_of_range("Index out of range");
