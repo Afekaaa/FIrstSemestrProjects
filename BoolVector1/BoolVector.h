@@ -10,7 +10,7 @@ public:
 	BoolVector(const int len, const int bitValue);
 	~BoolVector();
 
-	friend std::ostream& operator << (std::ostream& vectorOut, BoolVector vector);
+	friend std::ostream& operator << (std::ostream& vectorOut, BoolVector& vector);
 	friend std::istream& operator >> (std::istream& vectorIn, BoolVector& vector);
 
 	void inversion();
@@ -19,8 +19,6 @@ public:
 	int weight() const;
 
 	void bitSet(const int index, const int bitValue);
-	void bitReplacment(int index, int value);
-	void vectorReplacement(int value);
 
 
 	int operator [](int index) const;

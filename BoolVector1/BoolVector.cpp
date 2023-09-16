@@ -5,12 +5,14 @@ BoolVector::BoolVector()
 {
 	m_len = 1;
 	m_letters = new char[m_len];
+	m_vectorLen = m_len * m_letterLen;
 }
 
 BoolVector::BoolVector(const char* mas, const int len)
 {
 	m_len = len;
 	m_letters = new char[m_len];
+	m_vectorLen = m_len * m_letterLen;
 
 	for (int i = 0; i < m_len; ++i)
 		m_letters[i] = mas[i];
@@ -19,6 +21,7 @@ BoolVector::BoolVector(const char* mas, const int len)
 BoolVector::BoolVector(const BoolVector& otherVector)
 {
 	m_len = otherVector.m_len;
+	m_vectorLen = m_len * m_letterLen;
 
 	m_letters = new char[m_len];
 
@@ -28,7 +31,13 @@ BoolVector::BoolVector(const BoolVector& otherVector)
 
 BoolVector::BoolVector(const int len, const int bitValue = 0)
 {
-	m_len = len;
+	m_vectorLen = len;
+
+	if (len % m_letterLen != 0)
+		m_len = m_vectorLen / m_letterLen + 1;
+	else
+		m_len = m_vectorLen / m_letterLen;
+
 	m_letters = new char[m_len];
 
 	for (int i = 0; i < m_len; ++i)
@@ -40,7 +49,7 @@ BoolVector::~BoolVector()
 	delete[] m_letters;
 }
 
-void BoolVector::bitSet(const int index, const int bitValue)
+void BoolVector::bitSet(const int index, const int bitValue) // на 4
 {
 	int mask = 1;
 	int i = 0;
@@ -56,7 +65,6 @@ void BoolVector::bitSet(const int index, const int bitValue)
 
 void BoolVector::inversion()
 {
-
 	for (int i = 0; i < m_len; ++i)
 	{
 		int mask = 1;
@@ -163,7 +171,7 @@ void BoolVector::getPosition(int& symbolNum, int& mask, int index) const
 	}
 }
 
-std::ostream& operator << (std::ostream& vectorOut, BoolVector vector)
+std::ostream& operator << (std::ostream& vectorOut, BoolVector& vector)
 {
 	for (int i = 0; i < vector.m_vectorLen; ++i)
 	{
@@ -227,5 +235,7 @@ void BoolVector::indexAdmissable(int index) const
 int main()
 {
 	const int len = 5;
-	BoolVector vector;
+	BoolVector vector(len);
+
+	std::cout << vector;
 }
