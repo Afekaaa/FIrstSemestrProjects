@@ -16,7 +16,7 @@ public:
 	void inversion();
 	void bitInvertion(int index);
 
-	void bitSet(int index, int value);
+	void bitSet(const int index, const int bitValue);
 	void bitReplacment(int index, int value);
 	void vectorReplacement(int value);
 

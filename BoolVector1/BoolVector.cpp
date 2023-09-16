@@ -40,6 +40,72 @@ BoolVector::~BoolVector()
 	delete[] m_letters;
 }
 
+void BoolVector::bitSet(const int index, const int bitValue)
+{
+	int mask = 1;
+	int i = 0;
+	getPosition(i, mask, index);
+
+	if (bitValue == 0)
+		m_letters[i] &= ~mask;
+	else if (bitValue == 1)
+		m_letters[i] |= mask;
+	else
+		throw std::invalid_argument("Bit may can only 1 or 0 value");
+}
+
+void BoolVector::inversion()
+{
+
+	for (int i = 0; i < m_len; ++i)
+	{
+		int mask = 1;
+		for (int j = 0; j < m_letterLen - 1 and i * m_letterLen + j < m_vectorLen; ++j) //ToDo
+		{
+			m_letters[i] ^= mask;
+			mask <<= 1;
+		}
+	}
+}
+
+void BoolVector::bitInvertion(int index)
+{
+	int mask = 1;
+	int symbolNum = 0;
+	getPosition(symbolNum, mask, index);
+
+	m_letters[symbolNum] ^= mask;
+}
+
+BoolVector BoolVector::operator& (const BoolVector otherVector) const
+{
+	BoolVector vector(*this);
+
+	int vectorLen = std::min(m_vectorLen, otherVector.m_vectorLen);
+	int 
+}
+
+void BoolVector::getPosition(int& symbolNum, int& mask, int index)
+{
+	indexAdmissable(index);
+
+	if (index == 0)
+	{
+		symbolNum = m_len - 1;
+		mask = 1;
+	}
+	else if ((index + 1) % m_letterLen != 0)
+	{
+		symbolNum = m_len - (index + 1) / m_letterLen;
+		mask <<= m_letterLen - 1;
+	}
+	else
+	{
+		symbolNum = m_len - ((index + 1) / m_letterLen) - 1;
+		mask <<= index % m_letterLen;
+	}
+}
+
 std::ostream& operator << (std::ostream& vectorOut, BoolVector vector)
 {
 	for (int i = 0; i < vector.m_vectorLen; ++i)
@@ -77,81 +143,23 @@ std::istream& operator>>(std::istream& vectorIn, BoolVector& vector)
 				bit <<= j;
 				vector.m_letters[i] &= bit;
 			}
-			
+
 		}
 	}
 
 	return vectorIn;
 }
 
-void BoolVector::inversion()
-{
-
-	for (int i = 0; i < m_len; ++i)
-	{
-		int mask = 1;
-		for (int j = 0; j < m_letterLen - 1 and i * m_letterLen + j < m_vectorLen; ++j) //ToDo
-		{
-			m_letters[i] ^= mask;
-			mask <<= 1;
-		}
-	}
-}
-
-void BoolVector::bitInvertion(int index)
-{
-	int mask = 1;
-	int symbolNum = 0;
-	getPosition(symbolNum, mask, index);
-
-	m_letters[symbolNum] ^= mask;
-}
-
-void BoolVector::getPosition(int& symbolNum, int& mask, int index)
-{
-	indexAdmissable(index);
-
-	if (index == 0)
-	{
-		symbolNum = m_len - 1;
-		mask = 1;
-	}
-	else if ((index + 1) % m_letterLen != 0)
-	{
-		symbolNum = m_len - (index + 1) / m_letterLen;
-		mask <<= m_letterLen - 1;
-	}
-	else
-	{
-		symbolNum = m_len - ((index + 1) / m_letterLen) - 1;
-		mask <<= index % m_letterLen;
-	}
-}
-
 int BoolVector::operator [] (int index)
 {
-	indexAdmissable(index);
-
-	if (index == 0)
-		return m_letters[m_len - 1] & 1;
-
 	int i = 0;
 	int mask = 1;
+	
+	getPosition(i, mask, index);
 
-	if (index % m_letterLen != 0)
-	{
-		i = index / m_letterLen;
-		mask <<= index % m_letterLen - 1;
-	}
-	else
-	{
-		i = index / m_letterLen - 1;
-		mask <<= m_letterLen - 1;
-	}
-
-	return m_letters[m_len - i - 1] & mask;
-
+	return m_letters[i] & mask;
 }
+
 
 void BoolVector::indexAdmissable(int index)
 {
