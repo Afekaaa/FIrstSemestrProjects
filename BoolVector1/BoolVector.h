@@ -10,7 +10,7 @@ public:
 	BoolVector(const int len, const int bitValue);
 	~BoolVector();
 
-	friend std::ostream& operator << (std::ostream& vectorOut, BoolVector& vector);
+	friend std::ostream& operator << (std::ostream& vectorOut, const BoolVector& vector);
 	friend std::istream& operator >> (std::istream& vectorIn, BoolVector& vector);
 
 	void inversion();

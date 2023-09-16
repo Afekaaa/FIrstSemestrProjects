@@ -156,11 +156,11 @@ BoolVector BoolVector::operator ^ (const BoolVector otherVector) const
 void BoolVector::getPosition(int& symbolNum, int& mask, int index) const
 {
 	indexAdmissable(index);
+	mask = 1;
 
 	if (index == 0)
 	{
 		symbolNum = m_len - 1;
-		mask = 1;
 	}
 	else if ((index + 1) % m_letterLen == 0)
 	{
@@ -174,7 +174,7 @@ void BoolVector::getPosition(int& symbolNum, int& mask, int index) const
 	}
 }
 
-std::ostream& operator << (std::ostream& vectorOut, BoolVector& vector)
+std::ostream& operator << (std::ostream& vectorOut, const BoolVector& vector)
 {
 	for (int i = vector.m_vectorLen - 1; i >= 0; --i)
 		vectorOut << vector[i] << " ";
@@ -185,8 +185,7 @@ std::ostream& operator << (std::ostream& vectorOut, BoolVector& vector)
 std::istream& operator>> (std::istream& vectorIn, BoolVector& vector)
 {
 	std::cout << "Enter the number of bits: ";
-
-	std::cin >> vector.m_vectorLen;
+	vectorIn >> vector.m_vectorLen;
 	if (vector.m_vectorLen % vector.m_letterLen != 0)
 		vector.m_len = vector.m_vectorLen / vector.m_letterLen + 1;
 	else
