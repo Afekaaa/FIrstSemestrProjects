@@ -111,7 +111,6 @@ BoolVector BoolVector::operator& (const BoolVector otherVector) const
 			getPosition(j, mask, i);
 			vector.m_letters[j] |= mask;
 		}
-
 	}
 
 	return vector;
@@ -203,7 +202,7 @@ std::istream& operator>> (std::istream& vectorIn, BoolVector& vector)
 
 	int bit = 0;
 	
-	for (int i = 0; i < vector.m_vectorLen; ++i)
+	for (int i = vector.m_vectorLen - 1; i >= 0; --i)
 	{
 		std::cin >> bit;
 
@@ -239,4 +238,8 @@ int main()
 	BoolVector vector(len);
 
 	std::cout << vector;
+	std::cin >> vector;
+	std::cout << std::endl << vector << std::endl;
+
+	std::cout << vector[0] << vector[1] << vector[2] << vector[3];
 }

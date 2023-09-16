@@ -278,6 +278,8 @@ int& Array::operator [] (const int index)
 {
 	if (indexAdmissible(index) and index != m_realLen)
 		return m_mas[index];
+
+	throw std::invalid_argument("index is out of boundaries");
 }
 
 Array& Array::operator -= (const int index)
@@ -307,6 +309,8 @@ Array& Array::operator	= (const Array& otherMas)
 
 	for (int i = 0; i < m_realLen; i++)
 		m_mas[i] = otherMas.m_mas[i];
+
+	return *this;
 }
 
 Array Array::operator + (const int num) const
