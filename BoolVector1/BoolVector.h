@@ -8,10 +8,10 @@ public:
 	BoolVector(const char* mas, const int len);
 	BoolVector(const BoolVector& otherBoolVector);
 	BoolVector(const int len, const int bitValue);
-	~BoolVector() = default;
+	~BoolVector();
 
-	friend std::ostream operator << (std::ostream& vectorOut, BoolVector vector);
-	friend std::istream operator >> (std::istream& vectorIn, BoolVector& vector);
+	friend std::ostream& operator << (std::ostream& vectorOut, BoolVector vector);
+	friend std::istream& operator >> (std::istream& vectorIn, BoolVector& vector);
 
 	void inversion();
 	void bitInvertion(int index);
@@ -25,7 +25,6 @@ public:
 	BoolVector operator & (const BoolVector otherVector) const;
 	BoolVector& operator &= (const BoolVector otherVector);
 	BoolVector operator | (const BoolVector otherVector) const;
-	BoolVector& operator &= (const BoolVector otherVector);
 	BoolVector operator ^ (const BoolVector otherVector) const;
 	BoolVector& operator ^= (const BoolVector otherVector);
 	BoolVector operator << (const int step) const;

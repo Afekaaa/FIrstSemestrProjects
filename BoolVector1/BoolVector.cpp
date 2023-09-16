@@ -40,17 +40,19 @@ BoolVector::~BoolVector()
 	delete[] m_letters;
 }
 
-std::ostream operator << (std::ostream& vectorOut, BoolVector vector)
+std::ostream& operator << (std::ostream& vectorOut, BoolVector vector)
 {
 	for (int i = 0; i < vector.m_vectorLen; ++i)
 	{
-		std::cout << vector[i] << " ";
+		vectorOut << vector[i] << " ";
 	}
+
+	return vectorOut;
 }
 
-std::istream operator>>(std::istream& vectorIn, BoolVector& vector)
+std::istream& operator>>(std::istream& vectorIn, BoolVector& vector)
 {
-	std::cout << "Enter the nuber of bits: ";
+	std::cout << "Enter the number of bits: ";
 
 	std::cin >> vector.m_vectorLen;
 	vector.m_len = vector.m_vectorLen / vector.m_letterLen;
@@ -78,9 +80,9 @@ std::istream operator>>(std::istream& vectorIn, BoolVector& vector)
 			
 		}
 	}
+
+	return vectorIn;
 }
-
-
 
 void BoolVector::inversion()
 {
@@ -99,35 +101,31 @@ void BoolVector::inversion()
 void BoolVector::bitInvertion(int index)
 {
 	int mask = 1;
-	mask <<= index - 1;
+	int symbolNum = 0;
+	getPosition(symbolNum, mask, index);
 
-
+	m_letters[symbolNum] ^= mask;
 }
 
-void BoolVector::getPosition(int& symbolsNum, int& mask, int index)
+void BoolVector::getPosition(int& symbolNum, int& mask, int index)
 {
 	indexAdmissable(index);
 
 	if (index == 0)
 	{
-		symbolsNum = m_len - 1;
+		symbolNum = m_len - 1;
 		mask = 1;
-		return;
 	}
-
-	if (index % m_letterLen != 0)
+	else if ((index + 1) % m_letterLen != 0)
 	{
-		symbolsNum = index / m_letterLen;
-		mask <<= index % m_letterLen - 1;
+		symbolNum = m_len - (index + 1) / m_letterLen;
+		mask <<= m_letterLen - 1;
 	}
 	else
 	{
-		symbolsNum = index / m_letterLen - 1;
-		mask <<= index % m_letterLen - 1;
+		symbolNum = m_len - ((index + 1) / m_letterLen) - 1;
+		mask <<= index % m_letterLen;
 	}
-
-
-
 }
 
 int BoolVector::operator [] (int index)
