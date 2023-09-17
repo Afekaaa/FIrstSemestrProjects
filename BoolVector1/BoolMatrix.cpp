@@ -14,7 +14,7 @@ BoolMatrix::BoolMatrix(int rows, int colomns)
 	m_columns = colomns;
 	m_rows = rows;
 
-	m_matrix = BoolVector[m_rows];
+	m_matrix = new BoolVector[m_rows];
 }
 
 BoolMatrix(const char** bitMatrix, int rows, int colomn);

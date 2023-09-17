@@ -7,6 +7,10 @@ class BoolMatrix
 {
 public:
 	BoolMatrix();
+	BoolMatrix(int rows, int colomns);
+	BoolMatrix(const char** bitMatrix, int rows, int colomn);
+	BoolMatrix(const BoolMatrix& otherMatrix);
+
 private:
 	BoolVector* m_matrix = nullptr;
 
