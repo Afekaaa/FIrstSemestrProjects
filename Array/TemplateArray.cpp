@@ -55,16 +55,16 @@ int TemplateArray<T>::find(T elem) const
 }
 
 template<class T>
-std::ostream operator << (std::ostream arrOut, TemplateArray<T> array)
+std::ostream operator << (std::ostream& arrOut, TemplateArray<T> array)
 {
 	for (int i = 0; i < array.m_reelLen; ++i)
-		std::cout << array.m_arr[i] << " ";
+		arrOut << array.m_arr[i] << " ";
 
 	return arrOut;
 }
 
 template<class T>
-std::istream operator << (std::istream arrIn, TemplateArray<T> &array)
+std::istream operator << (std::istream& arrIn, TemplateArray<T> &array)
 {
 	std::cout << "Enter the number of elements: ";
 	std::cin >> array.m_realLen;
@@ -325,7 +325,7 @@ T& TemplateArray<T>::operator [] (int index)
 }
 
 template <class T>
-TemplateArray<T>& TemplateArray<T>::operator = (TemplateArray otherArray)
+TemplateArray<T>& TemplateArray<T>::operator = (const TemplateArray& otherArray)
 {
 	if (*this == otherArray)
 		return *this;
@@ -339,6 +339,8 @@ TemplateArray<T>& TemplateArray<T>::operator = (TemplateArray otherArray)
 
 	for (int i = 0; i < m_realLen; ++i)
 		m_arr[i] = otherArray.m_arr[i];
+
+	return this*;
 }
 
 template <class T>
@@ -357,21 +359,21 @@ TemplateArray<T> TemplateArray<T>::operator + (T elem) const
 }
 
 template <class T>
-TemplateArray<T>& TemplateArray<T>::operator += (TemplateArray otherArray)
+TemplateArray<T>& TemplateArray<T>::operator += (const TemplateArray& otherArray)
 {
 	for (int i = 0; i < otherArray.m_realLen; ++i)
 		m_arr += otherArray.m_arr[i];
 }
 
 template <class T>
-TemplateArray<T> TemplateArray<T>::operator + (TemplateArray otherArray) const
+TemplateArray<T> TemplateArray<T>::operator + (const TemplateArray& otherArray) const
 {
 	TemplateArray arr(m_arr);
 	return arr += otherArray;
 }
 
 template <class T>
-bool TemplateArray<T>::operator == (TemplateArray otherArray) const
+bool TemplateArray<T>::operator == (const TemplateArray& otherArray) const
 {
 	if (m_realLen != otherArray.m_realLen)
 		return false;
@@ -384,7 +386,7 @@ bool TemplateArray<T>::operator == (TemplateArray otherArray) const
 }
 
 template <class T>
-bool TemplateArray<T>::operator != (TemplateArray otherArray) const
+bool TemplateArray<T>::operator != (const TemplateArray& otherArray) const
 {
 	if (*this == otherArray)
 		return false;

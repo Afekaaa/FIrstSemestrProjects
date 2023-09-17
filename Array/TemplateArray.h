@@ -14,8 +14,8 @@ public:
 
 	int find(T elem) const;
 
-	friend std::ostream operator << (std::ostream arrOut, TemplateArray array);
-	friend std::istream operator << (std::istream arrIn, TemplateArray &array);
+	friend std::ostream operator << (std::ostream& arrOut, TemplateArray array);
+	friend std::istream operator << (std::istream& arrIn, TemplateArray &array);
 
 	void insert(int index, T elem);
 
@@ -32,13 +32,13 @@ public:
 	TemplateArray& operator -= (int index);
 	TemplateArray operator - (T elem) const;
 	T& operator [] (int index);
-	TemplateArray& operator = (TemplateArray otherArray);
+	TemplateArray& operator = (const TemplateArray& otherArray);
 	TemplateArray& operator += (T elem);
 	TemplateArray operator + (T elem) const;
-	TemplateArray& operator += (TemplateArray otherArray);
-	TemplateArray operator + (TemplateArray otherArray) const;
-	bool operator == (TemplateArray otherArray) const;
-	bool operator != (TemplateArray otherArray) const;
+	TemplateArray& operator += (const TemplateArray& otherArray);
+	TemplateArray operator + (const TemplateArray& otherArray) const;
+	bool operator == (const TemplateArray& otherArray) const;
+	bool operator != (const TemplateArray& otherArray) const;
 
 private:
 	const int m_maxDifferenceBetweenRealLenAndMaxLen = 10;
