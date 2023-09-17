@@ -21,9 +21,10 @@ public:
 	void bitSet(const int index, const int bitValue);
 
 	int operator [](int index) const;
-	BoolVector operator & (const BoolVector otherVector) const;
-	BoolVector operator | (const BoolVector otherVector) const;
-	BoolVector operator ^ (const BoolVector otherVector) const;
+	BoolVector& operator = (const BoolVector& otherVector);
+	BoolVector operator & (const BoolVector& otherVector) const;
+	BoolVector operator | (const BoolVector& otherVector) const;
+	BoolVector operator ^ (const BoolVector& otherVector) const;
 
 private:
 	char* m_letters = nullptr;

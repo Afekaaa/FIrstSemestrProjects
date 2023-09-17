@@ -98,7 +98,7 @@ int BoolVector::weight() const
 	return count; 
 }
 
-BoolVector BoolVector::operator& (const BoolVector otherVector) const
+BoolVector BoolVector::operator& (const BoolVector& otherVector) const
 {
 	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
 
@@ -116,7 +116,7 @@ BoolVector BoolVector::operator& (const BoolVector otherVector) const
 	return vector;
 }
 
-BoolVector BoolVector::operator | (const BoolVector otherVector) const
+BoolVector BoolVector::operator | (const BoolVector& otherVector) const
 {
 	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
 
@@ -135,7 +135,7 @@ BoolVector BoolVector::operator | (const BoolVector otherVector) const
 	return vector;
 }
 
-BoolVector BoolVector::operator ^ (const BoolVector otherVector) const
+BoolVector BoolVector::operator ^ (const BoolVector& otherVector) const
 {
 	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
 
@@ -203,7 +203,7 @@ std::istream& operator>> (std::istream& vectorIn, BoolVector& vector)
 	
 	for (int i = vector.m_vectorLen - 1; i >= 0; --i)
 	{
-		std::cin >> bit;
+		vectorIn >> bit;
 
 		if (bit == 1)
 		{
@@ -213,6 +213,14 @@ std::istream& operator>> (std::istream& vectorIn, BoolVector& vector)
 
 	return vectorIn;
 }
+
+BoolVector& BoolVector::operator = (const BoolVector& otherVector)
+{
+	if (this == &otherVector)
+		return *this;
+
+}
+
 
 int BoolVector::operator [] (int index) const
 {
