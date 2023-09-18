@@ -18,7 +18,7 @@ public:
 
 	int weight() const;
 
-	void bitSet(const int index, const int bitValue);
+	void setBit(const int index, const int bitValue);
 
 	int operator [](int index) const;
 	BoolVector& operator = (const BoolVector& otherVector);

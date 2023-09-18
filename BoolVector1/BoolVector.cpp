@@ -55,7 +55,7 @@ BoolVector::~BoolVector()
 	delete[] m_letters;
 }
 
-void BoolVector::bitSet(const int index, const int bitValue) // на 4
+void BoolVector::setBit(const int index, const int bitValue) // на 4
 {
 	int mask = 1;
 	int i = 0;
@@ -74,9 +74,9 @@ void BoolVector::inversion()
 	for (int i = 0; i < m_vectorLen; ++i)
 	{
 		if (m_letters[i] == 0)
-			bitSet(i, 1);
+			setBit(i, 1);
 		else
-			bitSet(i, 0);
+			setBit(i, 0);
 	}
 }
 
@@ -207,7 +207,7 @@ std::istream& operator>> (std::istream& vectorIn, BoolVector& vector)
 
 		if (bit == 1)
 		{
-			vector.bitSet(i, bit);
+			vector.setBit(i, bit);
 		}
 	}
 
@@ -218,6 +218,7 @@ BoolVector& BoolVector::operator = (const BoolVector& otherVector)
 {
 	if (this == &otherVector)
 		return *this;
+
 
 }
 
