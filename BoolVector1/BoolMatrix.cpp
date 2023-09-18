@@ -31,7 +31,7 @@ BoolMatrix::BoolMatrix(const char** bitMatrix, int rows, int columns)
 		m_matrix[i] = BoolVector(bitMatrix[i], columns);
 }
 
-BoolMatrix::BoolMatrix(const BoolMatrix& otherMatrix)
+BoolMatrix::BoolMatrix(const BoolMatrix & other)
 {
 	m_rows = otherMatrix.m_rows;
 	m_columns = otherMatrix.m_columns;
@@ -41,6 +41,15 @@ BoolMatrix::BoolMatrix(const BoolMatrix& otherMatrix)
 	for (int i = 0; i < m_rows; ++i)
 		m_matrix[i] = BoolVector(otherMatrix.m_matrix[i]);
 }
+
+BoolMatrix::~BoolMatrix()
+{
+	delete[] m_matrix;
+}
+
+
+
+
 
 void BoolMatrix::rowsAndColumnAdmissable(int rows, int columns)
 {
