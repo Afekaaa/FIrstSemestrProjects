@@ -8,14 +8,19 @@ BoolVector::BoolVector()
 	m_vectorLen = m_len * m_letterLen;
 }
 
-BoolVector::BoolVector(const char* mas, const int len)
+BoolVector::BoolVector(const char* mas, const int vectorLen)
 {
-	if (mas or len == 0)
+	if (mas or vectorLen == 0)
 		throw std::invalid_argument("The vector length cannot be less than one");
 
-	m_len = len;
+	m_vectorLen = vectorLen;
+
+	if (m_vectorLen % m_letterLen == 0)
+		m_len = m_vectorLen / m_letterLen;
+	else
+		m_len = m_vectorLen / m_letterLen + 1;
+
 	m_letters = new char[m_len];
-	m_vectorLen = m_len * m_letterLen;
 
 	for (int i = 0; i < m_len; ++i)
 		m_letters[i] = mas[i];
@@ -32,7 +37,7 @@ BoolVector::BoolVector(const BoolVector& otherVector)
 		m_letters[i] = otherVector.m_letters[i];
 }
 
-BoolVector::BoolVector(const int len, const int bitValue = 0)
+BoolVector::BoolVector(const int len, const int bitValue)
 {
 	if (len == 0)
 		throw std::invalid_argument("The vector length cannot be less than one");

@@ -5,7 +5,7 @@ class BoolVector
 {
 public:
 	BoolVector();
-	BoolVector(const char* mas, const int len);
+	BoolVector(const char* mas, const int vectorLen);
 	BoolVector(const BoolVector& otherBoolVector);
 	BoolVector(const int len, const int bitValue);
 	~BoolVector();
@@ -18,7 +18,7 @@ public:
 
 	int weight() const;
 
-	void setBit(const int index, const int bitValue);
+	void setBit(const int index, const int bitValue = 0);
 
 	int operator [](int index) const;
 	BoolVector& operator = (const BoolVector& otherVector);
