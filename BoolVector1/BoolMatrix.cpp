@@ -47,7 +47,20 @@ BoolMatrix::~BoolMatrix()
 	delete[] m_matrix;
 }
 
+int BoolMatrix::weight() const
+{
+	int counter = 0;
 
+	for (int i = 0; i < m_rows; ++i)
+		counter += m_matrix[i].weight();
+
+	return counter;
+}
+
+BoolVector BoolMatrix::conjunction() const
+{
+	BoolVector vector = m_matrix[0];
+}
 
 
 
