@@ -219,7 +219,15 @@ BoolVector& BoolVector::operator = (const BoolVector& otherVector)
 	if (this == &otherVector)
 		return *this;
 
+	m_len = otherVector.m_len;
+	m_vectorLen = otherVector.m_vectorLen;
 
+	delete[] m_letters;
+
+	m_letters = new char[m_len];
+
+	for (int i = 0; i < m_vectorLen; ++i)
+		setBit(i, otherVector[i]);
 }
 
 
