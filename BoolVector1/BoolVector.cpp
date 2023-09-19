@@ -37,7 +37,7 @@ BoolVector::BoolVector(const BoolVector& otherVector)
 		m_letters[i] = otherVector.m_letters[i];
 }
 
-BoolVector::BoolVector(const int len, const int bitValue)
+BoolVector::BoolVector(const int len, const int bitValue = 0)
 {
 	if (len == 0)
 		throw std::invalid_argument("The vector length cannot be less than one");
@@ -103,7 +103,7 @@ int BoolVector::weight() const
 	return count; 
 }
 
-BoolVector BoolVector::operator& (const BoolVector& otherVector) const
+BoolVector BoolVector::operator & (const BoolVector& otherVector) const
 {
 	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
 
@@ -119,6 +119,12 @@ BoolVector BoolVector::operator& (const BoolVector& otherVector) const
 	}
 
 	return vector;
+}
+
+BoolVector& BoolVector::operator &= (const BoolVector& otherVector)
+{
+	*this = *this & otherVector;
+	return *this;
 }
 
 BoolVector BoolVector::operator | (const BoolVector& otherVector) const
@@ -235,7 +241,6 @@ BoolVector& BoolVector::operator = (const BoolVector& otherVector)
 		setBit(i, otherVector[i]);
 }
 
-
 int BoolVector::operator [] (int index) const
 {
 	int i = 0;
@@ -256,7 +261,7 @@ void BoolVector::indexAdmissable(int index) const
 int main()
 {
 	const int len = 5;
-	BoolVector vector(len);
+	BoolVector vector(len, 0);
 
 	std::cout << vector;
 	std::cin >> vector;

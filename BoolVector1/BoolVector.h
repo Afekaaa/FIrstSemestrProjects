@@ -23,6 +23,7 @@ public:
 	int operator [](int index) const;
 	BoolVector& operator = (const BoolVector& otherVector);
 	BoolVector operator & (const BoolVector& otherVector) const;
+	BoolVector& operator &= (const BoolVector& otherVector);
 	BoolVector operator | (const BoolVector& otherVector) const;
 	BoolVector operator ^ (const BoolVector& otherVector) const;
 
