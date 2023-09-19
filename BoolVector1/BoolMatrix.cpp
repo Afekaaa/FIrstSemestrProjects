@@ -1,7 +1,8 @@
 #include "BoolMatrix.h"
 
 
-BoolMatrix::BoolMatrix() :  m_columns{1}, m_rows{1}
+BoolMatrix::BoolMatrix() :  
+	m_columns{1}, m_rows{1}
 {
 	m_matrix = new BoolVector[m_rows];
 
@@ -67,7 +68,53 @@ BoolVector BoolMatrix::conjunction() const
 	return vector;
 }
 
+BoolMatrix& BoolMatrix::operator = (const BoolMatrix& other)
+{
+	if (this == &other)
+		return *this;
 
+
+	for (int i = 0; i < m_rows; ++i)
+		delete[] m_matrix;
+
+	delete m_matrix;
+
+	m_columns = other.m_columns;
+	m_rows = other.m_rows;
+
+	m_matrix = new BoolVector[m_rows];
+
+	for (int i = 0; i < m_rows; ++i)
+		m_matrix[i] = BoolVector(m_columns, 0);
+
+	return *this;
+}
+
+BoolVector& BoolMatrix::operator [] (int index)
+{
+	if (index >= 0 and index < m_rows)
+		return m_matrix[index];
+}
+
+BoolMatrix BoolMatrix::operator & (BoolMatrix& other) const
+{
+	BoolMatrix matrix = BoolMatrix(*this);
+
+	for (int i = 0; i < std::min(m_rows, other.m_rows); ++i)
+		m_matrix[i] &= other.m_matrix[i];
+
+	return matrix;
+}
+
+BoolMatrix BoolMatrix::operator | (BoolMatrix& other) const
+{
+	BoolMatrix matrix = BoolMatrix(*this);
+
+	for (int i = 0; i < std::min(m_rows, other.m_rows); ++i)
+		m_matrix[i] |= other.m_matrix[i];
+
+	return matrix;
+}
 
 void BoolMatrix::rowsAndColumnAdmissable(int rows, int columns)
 {

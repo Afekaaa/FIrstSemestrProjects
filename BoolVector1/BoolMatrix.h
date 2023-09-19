@@ -20,9 +20,8 @@ public:
 
 	BoolMatrix& operator = (const BoolMatrix& other);
 	BoolVector& operator [] (int index);
-	BoolMatrix& operator & (BoolMatrix& other) const;
-	BoolMatrix& operator | (BoolMatrix& other) const;
-
+	BoolMatrix operator & (BoolMatrix& other) const;
+	BoolMatrix operator | (BoolMatrix& other) const;
 
 private:
 	BoolVector* m_matrix = nullptr;
