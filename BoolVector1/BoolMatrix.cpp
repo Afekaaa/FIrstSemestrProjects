@@ -33,13 +33,13 @@ BoolMatrix::BoolMatrix(const char** bitMatrix, int rows, int columns)
 
 BoolMatrix::BoolMatrix(const BoolMatrix & other)
 {
-	m_rows = otherMatrix.m_rows;
-	m_columns = otherMatrix.m_columns;
+	m_rows = other.m_rows;
+	m_columns = other.m_columns;
 
 	m_matrix = new BoolVector[m_rows];
 
 	for (int i = 0; i < m_rows; ++i)
-		m_matrix[i] = BoolVector(otherMatrix.m_matrix[i]);
+		m_matrix[i] = BoolVector(other.m_matrix[i]);
 }
 
 BoolMatrix::~BoolMatrix()
@@ -60,6 +60,11 @@ int BoolMatrix::weight() const
 BoolVector BoolMatrix::conjunction() const
 {
 	BoolVector vector = m_matrix[0];
+
+	for (int i = 1; i < m_rows; ++i)
+		vector &= m_matrix[i];
+
+	return vector;
 }
 
 
