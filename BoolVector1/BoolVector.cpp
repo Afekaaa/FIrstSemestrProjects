@@ -103,14 +103,15 @@ int BoolVector::weight() const
 	return count; 
 }
 
-BoolVector BoolVector::operator & (const BoolVector& otherVector) const
+BoolVector BoolVector::operator & (const BoolVector& otherVector) const 
 {
-	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
+	BoolVector vector(m_vectorLen);
 
-	for (int i = 0; i < vector.m_vectorLen; ++i)
+	for (int i = 0; i < std::min(m_vectorLen, otherVector.m_vectorLen); ++i)
 	{
 		int mask = 1;
 		int j = 0;
+
 		if (this->operator[](i) == 1 and otherVector[i] == 1)
 		{
 			getPosition(j, mask, i);
