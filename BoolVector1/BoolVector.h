@@ -25,6 +25,7 @@ public:
 	BoolVector operator & (const BoolVector& otherVector) const;
 	BoolVector& operator &= (const BoolVector& otherVector);
 	BoolVector operator | (const BoolVector& otherVector) const;
+	BoolVector& operator |= (const BoolVector& otherVector);
 	BoolVector operator ^ (const BoolVector& otherVector) const;
 
 private:

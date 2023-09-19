@@ -130,9 +130,9 @@ BoolVector& BoolVector::operator &= (const BoolVector& otherVector)
 
 BoolVector BoolVector::operator | (const BoolVector& otherVector) const
 {
-	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
+	BoolVector vector(m_vectorLen);
 
-	for (int i = 0; i < vector.m_vectorLen; ++i)
+	for (int i = 0; i < std::min(m_vectorLen, otherVector.m_vectorLen); ++i)
 	{
 		int mask = 1;
 		int j = 0;
@@ -145,6 +145,13 @@ BoolVector BoolVector::operator | (const BoolVector& otherVector) const
 	}
 
 	return vector;
+}
+
+BoolVector& BoolVector::operator |= (const BoolVector& otherVector)
+{
+	*this = *this | otherVector;
+
+	return *this;
 }
 
 BoolVector BoolVector::operator ^ (const BoolVector& otherVector) const
