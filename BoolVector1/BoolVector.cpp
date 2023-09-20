@@ -8,14 +8,19 @@ BoolVector::BoolVector()
 	m_vectorLen = m_len * m_letterLen;
 }
 
-BoolVector::BoolVector(const char* mas, const int len)
+BoolVector::BoolVector(const char* mas, const int vectorLen)
 {
-	if (mas or len == 0)
+	if (mas or vectorLen == 0)
 		throw std::invalid_argument("The vector length cannot be less than one");
 
-	m_len = len;
+	m_vectorLen = vectorLen;
+
+	if (m_vectorLen % m_letterLen == 0)
+		m_len = m_vectorLen / m_letterLen;
+	else
+		m_len = m_vectorLen / m_letterLen + 1;
+
 	m_letters = new char[m_len];
-	m_vectorLen = m_len * m_letterLen;
 
 	for (int i = 0; i < m_len; ++i)
 		m_letters[i] = mas[i];
@@ -55,7 +60,7 @@ BoolVector::~BoolVector()
 	delete[] m_letters;
 }
 
-void BoolVector::bitSet(const int index, const int bitValue) // на 4
+void BoolVector::setBit(const int index, const int bitValue) // на 4
 {
 	int mask = 1;
 	int i = 0;
@@ -74,9 +79,9 @@ void BoolVector::inversion()
 	for (int i = 0; i < m_vectorLen; ++i)
 	{
 		if (m_letters[i] == 0)
-			bitSet(i, 1);
+			setBit(i, 1);
 		else
-			bitSet(i, 0);
+			setBit(i, 0);
 	}
 }
 
@@ -98,14 +103,15 @@ int BoolVector::weight() const
 	return count; 
 }
 
-BoolVector BoolVector::operator& (const BoolVector otherVector) const
+BoolVector BoolVector::operator & (const BoolVector& otherVector) const 
 {
-	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
+	BoolVector vector(m_vectorLen);
 
-	for (int i = 0; i < vector.m_vectorLen; ++i)
+	for (int i = 0; i < std::min(m_vectorLen, otherVector.m_vectorLen); ++i)
 	{
 		int mask = 1;
 		int j = 0;
+
 		if (this->operator[](i) == 1 and otherVector[i] == 1)
 		{
 			getPosition(j, mask, i);
@@ -116,11 +122,17 @@ BoolVector BoolVector::operator& (const BoolVector otherVector) const
 	return vector;
 }
 
-BoolVector BoolVector::operator | (const BoolVector otherVector) const
+BoolVector& BoolVector::operator &= (const BoolVector& otherVector)
 {
-	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
+	*this = *this & otherVector;
+	return *this;
+}
 
-	for (int i = 0; i < vector.m_vectorLen; ++i)
+BoolVector BoolVector::operator | (const BoolVector& otherVector) const
+{
+	BoolVector vector(m_vectorLen);
+
+	for (int i = 0; i < std::min(m_vectorLen, otherVector.m_vectorLen); ++i)
 	{
 		int mask = 1;
 		int j = 0;
@@ -135,7 +147,14 @@ BoolVector BoolVector::operator | (const BoolVector otherVector) const
 	return vector;
 }
 
-BoolVector BoolVector::operator ^ (const BoolVector otherVector) const
+BoolVector& BoolVector::operator |= (const BoolVector& otherVector)
+{
+	*this = *this | otherVector;
+
+	return *this;
+}
+
+BoolVector BoolVector::operator ^ (const BoolVector& otherVector) const
 {
 	BoolVector vector(std::max(m_vectorLen, otherVector.m_vectorLen));
 
@@ -156,11 +175,11 @@ BoolVector BoolVector::operator ^ (const BoolVector otherVector) const
 void BoolVector::getPosition(int& symbolNum, int& mask, int index) const
 {
 	indexAdmissable(index);
+	mask = 1;
 
 	if (index == 0)
 	{
 		symbolNum = m_len - 1;
-		mask = 1;
 	}
 	else if ((index + 1) % m_letterLen == 0)
 	{
@@ -174,7 +193,7 @@ void BoolVector::getPosition(int& symbolNum, int& mask, int index) const
 	}
 }
 
-std::ostream& operator << (std::ostream& vectorOut, BoolVector& vector)
+std::ostream& operator << (std::ostream& vectorOut, const BoolVector& vector)
 {
 	for (int i = vector.m_vectorLen - 1; i >= 0; --i)
 		vectorOut << vector[i] << " ";
@@ -185,8 +204,7 @@ std::ostream& operator << (std::ostream& vectorOut, BoolVector& vector)
 std::istream& operator>> (std::istream& vectorIn, BoolVector& vector)
 {
 	std::cout << "Enter the number of bits: ";
-
-	std::cin >> vector.m_vectorLen;
+	vectorIn >> vector.m_vectorLen;
 	if (vector.m_vectorLen % vector.m_letterLen != 0)
 		vector.m_len = vector.m_vectorLen / vector.m_letterLen + 1;
 	else
@@ -204,15 +222,31 @@ std::istream& operator>> (std::istream& vectorIn, BoolVector& vector)
 	
 	for (int i = vector.m_vectorLen - 1; i >= 0; --i)
 	{
-		std::cin >> bit;
+		vectorIn >> bit;
 
 		if (bit == 1)
 		{
-			vector.bitSet(i, bit);
+			vector.setBit(i, bit);
 		}
 	}
 
 	return vectorIn;
+}
+
+BoolVector& BoolVector::operator = (const BoolVector& otherVector)
+{
+	if (this == &otherVector)
+		return *this;
+
+	m_len = otherVector.m_len;
+	m_vectorLen = otherVector.m_vectorLen;
+
+	delete[] m_letters;
+
+	m_letters = new char[m_len];
+
+	for (int i = 0; i < m_vectorLen; ++i)
+		setBit(i, otherVector[i]);
 }
 
 int BoolVector::operator [] (int index) const
@@ -235,7 +269,7 @@ void BoolVector::indexAdmissable(int index) const
 int main()
 {
 	const int len = 5;
-	BoolVector vector(len);
+	BoolVector vector(len, 0);
 
 	std::cout << vector;
 	std::cin >> vector;

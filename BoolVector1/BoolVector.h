@@ -5,12 +5,12 @@ class BoolVector
 {
 public:
 	BoolVector();
-	BoolVector(const char* mas, const int len);
+	BoolVector(const char* mas, const int vectorLen);
 	BoolVector(const BoolVector& otherBoolVector);
 	BoolVector(const int len, const int bitValue);
 	~BoolVector();
 
-	friend std::ostream& operator << (std::ostream& vectorOut, BoolVector& vector);
+	friend std::ostream& operator << (std::ostream& vectorOut, const BoolVector& vector);
 	friend std::istream& operator >> (std::istream& vectorIn, BoolVector& vector);
 
 	void inversion();
@@ -18,12 +18,15 @@ public:
 
 	int weight() const;
 
-	void bitSet(const int index, const int bitValue);
+	void setBit(const int index, const int bitValue = 0);
 
 	int operator [](int index) const;
-	BoolVector operator & (const BoolVector otherVector) const;
-	BoolVector operator | (const BoolVector otherVector) const;
-	BoolVector operator ^ (const BoolVector otherVector) const;
+	BoolVector& operator = (const BoolVector& otherVector);
+	BoolVector operator & (const BoolVector& otherVector) const;
+	BoolVector& operator &= (const BoolVector& otherVector);
+	BoolVector operator | (const BoolVector& otherVector) const;
+	BoolVector& operator |= (const BoolVector& otherVector);
+	BoolVector operator ^ (const BoolVector& otherVector) const;
 
 private:
 	char* m_letters = nullptr;
