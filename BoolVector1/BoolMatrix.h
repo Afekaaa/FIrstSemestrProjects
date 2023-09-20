@@ -12,8 +12,8 @@ public:
 	BoolMatrix(const BoolMatrix & other);
 	~BoolMatrix();
 
-	friend std::ostream operator << (std::ostream& matrixOut, BoolMatrix& matrix);
-	friend std::istream operator >> (std::istream& matrixIn, BoolMatrix& matrix);
+	friend std::ostream& operator << (std::ostream& matrixOut, BoolMatrix& matrix);
+	friend std::istream& operator >> (std::istream& matrixIn, BoolMatrix& matrix);
 
 	int weight() const;
 	BoolVector conjunction() const;
@@ -26,8 +26,8 @@ public:
 private:
 	BoolVector* m_matrix = nullptr;
 
-	int m_columns = 0;
-	int m_rows = 0;
+	int m_columns = 1;
+	int m_rows = 1;
 
 	void rowsAndColumnAdmissable(int rows, int columns);
 };

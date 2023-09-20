@@ -68,6 +68,39 @@ BoolVector BoolMatrix::conjunction() const
 	return vector;
 }
 
+std::ostream& operator << (std::ostream& matrixOut, BoolMatrix& matrix)
+{
+	for (int i = 0; i < matrix.m_rows; ++i)
+		std::cout << matrix[i] << std::endl;
+
+	return matrixOut;
+}
+
+std::istream& operator >> (std::istream& matrixIn, BoolMatrix& matrix)
+{
+	matrixIn >> matrix.m_rows >> matrix.m_columns;
+
+	delete[] matrix.m_matrix;
+
+	matrix.m_matrix = new BoolVector[matrix.m_rows];
+
+	int bit = 0;
+
+	for (int i = 0; i < matrix.m_rows; ++i)
+	{
+		matrix[i] = BoolVector(matrix.m_columns, 0);
+
+		for (int j = 0; j < matrix.m_columns; ++i)
+		{
+			matrixIn >> bit;
+			if (bit == 1)
+				matrix[i].setBit(matrix.m_columns - j - 1, bit);
+		}
+	}
+		
+	return matrixIn;
+}
+
 BoolMatrix& BoolMatrix::operator = (const BoolMatrix& other)
 {
 	if (this == &other)
