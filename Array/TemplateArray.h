@@ -14,8 +14,8 @@ public:
 
 	int find(T elem) const;
 
-	friend std::ostream operator << (std::ostream& arrOut, TemplateArray array);
-	friend std::istream operator << (std::istream& arrIn, TemplateArray &array);
+	friend std::ostream& operator << (std::ostream& arrOut, TemplateArray array);
+	friend std::istream& operator << (std::istream& arrIn, TemplateArray &array);
 
 	void insert(int index, T elem);
 
