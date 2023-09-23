@@ -105,3 +105,31 @@ void List<T>::pushFront(const T elem)
 	m_root->setNext(elem);
 	m_roor->next()->setNext(next);
 }
+
+template <class T>
+void List<T>::popBack()
+{
+	if (m_root == nullptr)
+		throw logic_error("trying to delete from an empty list");
+
+	Node* runner = m_root;
+
+	while (runner->next()->next())
+		runner = runner->next();
+
+	delete runner->next();
+}
+
+template <class T>
+int List<T>::size() const
+{
+	int counter = 0;
+	Node* runner = m_root;
+
+	while (runner->next()) {
+		counter++;
+		runner = runner->next();
+	}
+
+	return counter;
+}
