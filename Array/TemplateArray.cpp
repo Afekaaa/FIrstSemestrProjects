@@ -168,7 +168,7 @@ bool TemplateArray<T>::remove(const T elem)
 {
 	int index = find(elem);
 
-	if (elem != -1)
+	if (index != -1)
 	{
 		erase(index);
 		return true;
