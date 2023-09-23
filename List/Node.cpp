@@ -32,7 +32,7 @@ void List<T>::Node::setNext(const Node* node)
 }
 
 template <class T>
-T List<T>::Node::elem()
+T& List<T>::Node::elem()
 {
 	return elem;
 }
