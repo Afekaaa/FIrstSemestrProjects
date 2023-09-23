@@ -133,3 +133,24 @@ int List<T>::size() const
 
 	return counter;
 }
+
+template <class T>
+List<T>& List<T>::operator = (const List<T>& other)
+{
+	if (this == &other)
+		return this*;
+
+	clear();
+
+	Node* runner = m_root;
+	Node* otherRunner = other.m_root();
+
+	while (otherRunner->next())
+	{
+		runner->setNext(otherRunner->next()->elem());
+		runner = runner->next();
+		otherRunner = otherRunner->next();
+	}
+
+	return this*;
+}
