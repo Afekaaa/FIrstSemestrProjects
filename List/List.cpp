@@ -170,3 +170,32 @@ T& List<T>::operator [] (int index)
 
 	return runner->elem();
 }
+
+template <class T>
+bool List<T>::operator == (const List& other) const
+{
+	if (size() != other.size())
+		return false;
+
+	Node* runner = m_root;
+	Node* otherRunner = other.m_root();
+
+	while (runner->next)
+	{
+		if (runner->next()->elem() != otherRunner->next()->elem())
+			return false;
+
+		runner = runner->next;
+		otherRunner = otherRunner->next();
+	}
+
+	return true; 
+}
+
+template <class T>
+bool List<T>::operator != (const List& other) const
+{
+	if (other == this*)
+		return false;
+	return true;
+}
