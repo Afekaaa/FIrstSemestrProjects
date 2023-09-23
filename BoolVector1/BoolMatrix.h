@@ -20,8 +20,8 @@ public:
 
 	BoolMatrix& operator = (const BoolMatrix& other);
 	BoolVector& operator [] (int index);
-	BoolMatrix operator & (BoolMatrix& other) const;
-	BoolMatrix operator | (BoolMatrix& other) const;
+	BoolMatrix operator & (const BoolMatrix& other) const;
+	BoolMatrix operator | (const BoolMatrix& other) const;
 
 private:
 	BoolVector* m_matrix = nullptr;
@@ -29,6 +29,6 @@ private:
 	int m_columns = 1;
 	int m_rows = 1;
 
-	void rowsAndColumnAdmissable(int rows, int columns);
+	void rowsAndColumnAdmissable(int rows, int columns) const;
 };
 
