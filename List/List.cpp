@@ -1,21 +1,42 @@
-﻿// List.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include "List.h"
 
-#include <iostream>
-#include "List.h"
-
-int main()
+template <class T>
+List<T>::List(const TemplateArray<T>& arr, int len)
 {
-    std::cout << "Hello World!\n";
+	Node* runner = m_root;
+
+	for (int i = 0; i < len; ++i)
+	{
+		runner->setNext(arr[i]);
+		runner = runner->next();
+	}
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+template<class T>
+List<T>::List(const List& other)
+{
+	Node* runner = m_root;
+	Node* otherRunner = other.m_root();
+
+	while (otherRunner->next())
+	{
+		runner->setNext(otherRunner->next()->elem());
+		runner = runner->next();
+		otherRunner = otherRunner->next();
+	}
+}
+
+template <class T>
+List<T>::~List()
+{
+	Node* sRunner = m_root;
+	Node* fRunner = m_root->next();
+
+	while (sRunner)
+	{
+		delete sRunner;
+		sRunner = fRunner;
+		fRunner = fRunner->next();
+	}
+}
