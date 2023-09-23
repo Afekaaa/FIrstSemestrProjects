@@ -26,6 +26,12 @@ void List<T>::Node::setNext(const T elem)
 }
 
 template <class T>
+void List<T>::Node::setNext(const Node* node)
+{
+	m_next = node;
+}
+
+template <class T>
 T List<T>::Node::elem()
 {
 	return elem;
