@@ -45,7 +45,7 @@ TemplateArray<T>::~TemplateArray()
 }
 
 template<class T>
-int TemplateArray<T>::find(T elem) const
+int TemplateArray<T>::find(const T elem) const
 {
 	for (int i = 0; i < m_realLen; ++i)
 		if (m_arr[i] == elem)
@@ -55,7 +55,7 @@ int TemplateArray<T>::find(T elem) const
 }
 
 template<class T>
-std::ostream& operator << (std::ostream& arrOut, TemplateArray<T> array)
+std::ostream& operator << (std::ostream& arrOut, const TemplateArray<T> array)
 {
 	for (int i = 0; i < array.m_reelLen; ++i)
 		arrOut << array.m_arr[i] << " ";
@@ -164,7 +164,7 @@ void TemplateArray<T>::swap(T& a, T& b)
 }
 
 template <class T>
-bool TemplateArray<T>::remove(T elem)
+bool TemplateArray<T>::remove(const T elem)
 {
 	int index = find(elem);
 
