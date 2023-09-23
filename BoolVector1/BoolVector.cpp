@@ -74,7 +74,7 @@ void BoolVector::setBit(const int index, const int bitValue) // на 4
 		throw std::invalid_argument("bit can be one or zero");
 }
 
-void BoolVector::inversion()
+void BoolVector::inverse()
 {
 	for (int i = 0; i < m_vectorLen; ++i)
 	{
@@ -85,7 +85,7 @@ void BoolVector::inversion()
 	}
 }
 
-void BoolVector::bitInvertion(int index)
+void BoolVector::inverseBit(int index)
 {
 	int mask = 1;
 	int symbolNum = 0;

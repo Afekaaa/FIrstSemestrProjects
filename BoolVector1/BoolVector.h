@@ -13,8 +13,8 @@ public:
 	friend std::ostream& operator << (std::ostream& vectorOut, const BoolVector& vector);
 	friend std::istream& operator >> (std::istream& vectorIn, BoolVector& vector);
 
-	void inversion();
-	void bitInvertion(int index);
+	void inverse();
+	void inverseBit(int index);
 
 	int weight() const;
 
