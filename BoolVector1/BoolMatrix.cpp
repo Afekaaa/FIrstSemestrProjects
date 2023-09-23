@@ -129,7 +129,7 @@ BoolVector& BoolMatrix::operator [] (int index)
 		return m_matrix[index];
 }
 
-BoolMatrix BoolMatrix::operator & (BoolMatrix& other) const
+BoolMatrix BoolMatrix::operator & (const BoolMatrix& other) const
 {
 	BoolMatrix matrix = BoolMatrix(*this);
 
@@ -139,7 +139,7 @@ BoolMatrix BoolMatrix::operator & (BoolMatrix& other) const
 	return matrix;
 }
 
-BoolMatrix BoolMatrix::operator | (BoolMatrix& other) const
+BoolMatrix BoolMatrix::operator | (const BoolMatrix& other) const
 {
 	BoolMatrix matrix = BoolMatrix(*this);
 
@@ -149,7 +149,7 @@ BoolMatrix BoolMatrix::operator | (BoolMatrix& other) const
 	return matrix;
 }
 
-void BoolMatrix::rowsAndColumnAdmissable(int rows, int columns)
+void BoolMatrix::rowsAndColumnAdmissable(int rows, int columns) const
 {
 	if (rows <= 0 or columns <= 0)
 		throw std::invalid_argument("the number of rows and columns should not be less than one");
