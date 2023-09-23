@@ -12,7 +12,7 @@ public:
 	BoolMatrix(const BoolMatrix & other);
 	~BoolMatrix();
 
-	friend std::ostream& operator << (std::ostream& matrixOut, BoolMatrix& matrix);
+	friend std::ostream& operator << (std::ostream& matrixOut, const BoolMatrix& matrix);
 	friend std::istream& operator >> (std::istream& matrixIn, BoolMatrix& matrix);
 
 	int weight() const;
