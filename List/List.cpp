@@ -85,7 +85,7 @@ std::istream& operator >> (std::istream& listIn, List<T>& list)
 }
 
 template <class T>
-List<T>::Node* List<T>::find(T elem)
+List<T>::Node* List<T>::find(const T elem)
 {
 	Node* runner = m_root->next();
 

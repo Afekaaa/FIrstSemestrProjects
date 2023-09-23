@@ -34,7 +34,7 @@ public:
 	friend std::ostream& operator << (std::ostream& listOut, const List& list);
 	friend std::istream& operator >> (std::istream& listIn, List& list);
 
-	Node* find(T elem);
+	Node* find(const T elem);
 	void pushFront(const T elem);
 	void popBack();
 	void clear();
