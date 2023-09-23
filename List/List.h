@@ -19,6 +19,7 @@ public:
 
 		Node* next();
 		void setNext(const T elem);
+		void setNext(const Node* node);
 
 	private:
 		T m_elem;
@@ -33,9 +34,10 @@ public:
 	friend std::ostream& operator << (std::ostream& listOut, const List& list);
 	friend std::istream& operator >> (std::istream& listIn, List& list);
 
-	Node* find(int elem);
+	Node* find(T elem);
 	void pushFront(const T elem);
 	void popBack();
+	void clear();
 
 	int size() const;
 
