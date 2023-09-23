@@ -68,10 +68,10 @@ BoolVector BoolMatrix::conjunction() const
 	return vector;
 }
 
-std::ostream& operator << (std::ostream& matrixOut, BoolMatrix& matrix)
+std::ostream& operator << (std::ostream& matrixOut, const BoolMatrix& matrix)
 {
 	for (int i = 0; i < matrix.m_rows; ++i)
-		std::cout << matrix[i] << std::endl;
+		matrixOut << matrix.m_matrix[i] << std::endl;
 
 	return matrixOut;
 }
