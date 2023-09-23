@@ -14,16 +14,19 @@ public:
 	public:
 		Node() = default;
 		Node(const T elem);
+
+		T elem();
+
 		Node* next();
-		void setNext();
+		void setNext(const T elem);
 
 	private:
-		T elem;
-		Node* next = nullptr;
+		T m_elem;
+		Node* m_next = nullptr;
 	}; 
 
-	List();
-	List(const TemplateArray&<T> arr);
+	List() = default;
+	List(const TemplateArray<T>& arr, int len);
 	List(const List& other);
 	~List();
 
@@ -42,6 +45,6 @@ public:
 	bool operator != (const List& other) const;
 
 private:
-	Node* = nullptr;
+	Node* m_root = nullptr;
 };
 

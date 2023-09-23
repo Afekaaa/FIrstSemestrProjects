@@ -19,9 +19,14 @@ List<T>::Node* List<T>::Node::next()
 	return m_next;
 }
 
+template <class T>
+void List<T>::Node::setNext(const T elem)
+{
+	m_next = new Node(elem);
+}
 
 template <class T>
-void List<T>::Node::setNext(Node* node)
+T List<T>::Node::elem()
 {
-	m_next = node;
+	return elem;
 }
