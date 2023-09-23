@@ -110,7 +110,7 @@ template <class T>
 void List<T>::popBack()
 {
 	if (m_root == nullptr)
-		throw logic_error("trying to delete from an empty list");
+		throw std::logic_error("trying to delete from an empty list");
 
 	Node* runner = m_root;
 
@@ -153,4 +153,20 @@ List<T>& List<T>::operator = (const List<T>& other)
 	}
 
 	return this*;
+}
+
+template <class T>
+T& List<T>::operator [] (int index)
+{
+	if (index < 0 or index >= size())
+		throw std::out_of_range("trying to get an element out of range");
+
+	Node* runner = m_root;
+
+	for (int i = 0; i <= index; ++i)
+	{
+		runner = runner->next();
+	}
+
+	return runner->elem();
 }

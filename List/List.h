@@ -15,7 +15,7 @@ public:
 		Node() = default;
 		Node(const T elem);
 
-		T elem();
+		T& elem();
 
 		Node* next();
 		void setNext(const T elem);
