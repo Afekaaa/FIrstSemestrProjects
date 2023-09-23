@@ -63,7 +63,7 @@ int TemplateArray<T>::find(const T elem) const
 }
 
 template<class T>
-std::ostream& operator << (std::ostream& arrOut, const TemplateArray<T> array)
+std::ostream& operator << (std::ostream& arrOut, const TemplateArray<T>& array)
 {
 	for (int i = 0; i < array.m_reelLen; ++i)
 		arrOut << array.m_arr[i] << " ";
