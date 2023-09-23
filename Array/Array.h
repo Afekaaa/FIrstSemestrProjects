@@ -34,7 +34,7 @@ public:
 	void randomArrayToUp();
 	void randomArrayToDown();
 
-	friend std::ostream& operator << (std::ostream& masOut, Array arr);
+	friend std::ostream& operator << (std::ostream& masOut, const Array& arr);
 	friend std::istream& operator >> (std::istream& masIn, Array &arr);
 
 	int& operator [] (const int index);

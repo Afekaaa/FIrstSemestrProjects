@@ -241,7 +241,7 @@ void Array::randomArrayToDown()
 		m_mas[i] = m_mas[i - 1] + rand() % 20;
 }
 
-std::ostream& operator << (std::ostream& masOut, Array arr)
+std::ostream& operator << (std::ostream& masOut, const Array& arr)
 {
 	for (int i = 0; i < arr.m_realLen; ++i)
 		masOut << arr.m_mas[i] << " ";
@@ -251,7 +251,6 @@ std::ostream& operator << (std::ostream& masOut, Array arr)
 
 std::istream& operator >> (std::istream& masIn, Array &arr)
 {
-	std::cout << "Enter the number of elements: ";
 	masIn >> arr.m_realLen;
 	arr.m_maxLen = arr.m_realLen + arr.m_additionInLength;
 
@@ -260,8 +259,8 @@ std::istream& operator >> (std::istream& masIn, Array &arr)
 
 	arr.m_mas = new int[arr.m_maxLen];
 
-	if (arr.m_realLen != 0)
-		std::cout << std::endl << "Enter the number: ";
+	if (arr.m_realLen < 0)
+		throw std::invalid_argument("trying to set length less than zero.");
 
 	for (int i = 0; i < arr.m_realLen; ++i)
 		masIn >> arr.m_mas[i];
